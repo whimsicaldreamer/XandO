@@ -41,16 +41,22 @@ class game
      */
     function isRoomExists($room)
     {
-        $stmt = $this->dbh->prepare("SELECT room FROM players WHERE room = :room");
-        $stmt->execute(array(":room" => $room));
-        $count = $stmt->rowCount();
+        $count = 0;
+        try {
+            $stmt = $this->dbh->prepare("SELECT room FROM players WHERE room = :room");
+            $stmt->execute(array(":room" => $room));
+            $count = $stmt->rowCount();
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
 
         //Return boolean values depending on whether a room is already present
-        if($count > 0) {
-            return true;
+        if ($count > 0) {
+           return true;
         }
         else {
-            return false;
+           return false;
         }
     }
 
@@ -61,12 +67,17 @@ class game
 
     function setPlayer($playerName, $boardSize, $roomNumber)
     {
-        $stmt = $this->dbh->prepare("INSERT INTO players(room, playerName, boardSize) VALUES (:roomNumber, :playerName, :boardSize)");
-        $stmt->execute(array(
-            ":roomNumber" => $roomNumber,
-            ":playerName" => $playerName,
-            ":boardSize" => $boardSize
-        ));
+        try {
+            $stmt = $this->dbh->prepare("INSERT INTO players(room, playerName, boardSize) VALUES (:roomNumber, :playerName, :boardSize)");
+            $stmt->execute(array(
+                ":roomNumber" => $roomNumber,
+                ":playerName" => $playerName,
+                ":boardSize" => $boardSize
+            ));
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
     }
 
     function findPlayer()
@@ -77,6 +88,13 @@ class game
     function removePlayer()
     {
 
+    }
+
+    function logError($error)
+    {
+        $logFile = fopen('errors.log', 'ab');
+        fwrite($logFile, date('[Y-m-d H:i:s] ') . $error . PHP_EOL);
+        fclose($logFile);
     }
 
 }
