@@ -15,11 +15,11 @@ if(isset($_POST['playerName']) && isset($_POST['gridSize'])) {
 
     // Check whether player name is empty
     if($playerName == "") {
-        $playerName = "PLY".rand(0, 9999999999); // Generate a random player number with a 'PLY' prefix
+        $playerName = "PLY".mt_rand(0, 9999999999); // Generate a random player number with a 'PLY' prefix
     }
 
     $gameRoom = $gameHandler->createRoom(); // Generate a room
-    $gameHandler->setPlayer();
+    $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
 
     echo "playground.html?r=".$gameRoom."&s=".$gridSize; // Generate new room link
 }
