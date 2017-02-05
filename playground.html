@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
     <title>noughts N crosses</title>
     <link href="images/ico.png" type="image/x-icon" rel="shortcut icon" />
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -11,8 +11,36 @@
     <link href="css/ionicons.min.css" rel="stylesheet">
 </head>
 <body>
-<p>You reached the playground</p>
-
+<div class="site-wrapper">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand"><span class="icon ion-arrow-left-c"></span> Back</a>
+            </div>
+        </div>
+    </nav>
+    <!--<div class="centerMe">-->
+        <div class="container">
+            <table id="board" class="table table-bordered">
+                <tr>
+                    <td data-cell="0"></td>
+                    <td data-cell="1"></td>
+                    <td data-cell="2"></td>
+                </tr>
+                <tr>
+                    <td data-cell="3"></td>
+                    <td data-cell="4"></td>
+                    <td data-cell="5"></td>
+                </tr>
+                <tr>
+                    <td data-cell="6"></td>
+                    <td data-cell="7"></td>
+                    <td data-cell="8"></td>
+                </tr>
+            </table>
+        </div>
+    <!--</div>-->
+</div>
 
 <script src="js/jquery-2.1.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
