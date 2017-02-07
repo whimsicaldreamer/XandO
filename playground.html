@@ -44,5 +44,29 @@
 
 <script src="js/jquery-2.1.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function() {
+    function  resizetable() {
+        var elem = $('td');
+        var maxWidth = 180;
+        var newBoxWidth = elem.outerWidth();
+
+        if(newBoxWidth > maxWidth) {
+            newBoxWidth = maxWidth;
+        }
+
+        elem.outerWidth(newBoxWidth);
+        elem.outerHeight(newBoxWidth);
+    }
+    resizetable();
+    $(window).resize(function () {
+        resizetable();
+    });
+
+    $('td').on('click', function() {
+       $(this).html('&#10008;');
+    });
+});
+</script>
 </body>
 </html>
