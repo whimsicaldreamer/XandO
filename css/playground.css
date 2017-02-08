@@ -51,10 +51,14 @@ a:hover, a:active {
     border-top: 5px solid #5A332B;
     background-color: #ccbb99 !important;
 }
-#board, #board td {
+#board {
+    height: 100%;
     border: none;
 }
 #board td {
+    width: 33.3%;
+    height: 33.3%;
+    border: none;
     vertical-align: middle;
     font-size: 55px;
     cursor: pointer;
