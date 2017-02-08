@@ -9,7 +9,10 @@ body {
 }
 html, body {
     height: 100%;
-    background-color: #333;
+    /*background-color: #333;*/
+    -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    background-color: #ccbb99 !important;
 }
 a {
     color: #ffffff;
@@ -17,7 +20,10 @@ a {
 a:hover, a:active {
     color: #ffffff;
 }
-.site-wrapper {
+h4 {
+    font-family: chalkitup, "sans-serif";
+}
+/*.site-wrapper {
      width: 100%;
      height: 100%;
      min-height: 100%;
@@ -25,38 +31,62 @@ a:hover, a:active {
      box-shadow: inset 0 0 100px rgba(0,0,0,.5);
      border-top: 5px solid #5A332B;
      background-color: #ccbb99 !important;
-    overflow-y: auto;
- }
+     overflow-y: auto;
+ }*/
 .navbar {
     border-radius: 0;
     border: none;
     background-color: #683F36;
+    border-top: 5px solid #5A332B;
 }
 .navbar-brand {
     cursor: pointer;
     color: #ffffff !important;
     font-family: chalkitup, "sans-serif";
 }
-.centerMe {
+/*.centerMe {
     position: relative;
     top: 50%;
     transform: translateY(-60%);
+}*/
+.scoreboard {
+    background-color: #8a6d3b;
+    z-index: 1100;
 }
-.site-wrapper {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-    box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-    border-top: 5px solid #5A332B;
-    background-color: #ccbb99 !important;
+.counter-outer {
+    background-color: #3c3c3c;
+    border-radius: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.score {
+    font-size: 25px;
+    font-family: chalkitup, "sans-serif";
+}
+.detail {
+    background-color: #761c19;
+    display: block;
+    padding: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.playground {
+    height: 300px;
+}
+.boardContainer {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 200px;
 }
 #board, #board td {
     border: none;
 }
 #board td {
     vertical-align: middle;
-    font-size: 55px;
     cursor: pointer;
 }
 #board td:nth-child(2n + 1) {
@@ -79,13 +109,25 @@ a:hover, a:active {
 #board tr:last-child {
     border-bottom: none;
 }
-
 @media (min-width: 768px) {
-    #board {
-        margin: 0 auto;
-        width: 50%;
+    .boardContainer {
+        margin-left: 15%;
+        margin-right: 15%;
     }
-    #board td {
-        font-size: 100px;
+}
+@media (min-width: 992px) {
+    .scoreboard {
+        position: fixed;
+        right: 10px;
+    }
+    .boardContainer {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}
+@media (min-width: 1200px) {
+    .boardContainer {
+        margin-left: 25%;
+        margin-right: 25%;
     }
 }
