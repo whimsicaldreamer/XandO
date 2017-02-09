@@ -50,29 +50,62 @@
     </div>
 </div>
 
-<div class="jumbotron playground" style="background-color: #1b6d85;">
-    <div class="boardContainer" style="background-color: #2b542c;">
+<div class="jumbotron playground">
+    <div class="boardContainer">
         <table id="boardGrid" class="table table-bordered">
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
             </tr>
         </table>
     </div>
 </div>
 
-<div class="comments">
+<div class="comments" style="background-color: #9d9d9d;">
     comments section
 </div>
 
@@ -98,9 +131,8 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
-    /*function  resizetable() {
+    function  resizetable() {
         var elem = $('#boardGrid');
-        //var maxWidth = 180;
         var newGridWidth = elem.outerWidth();
         elem.outerHeight(newGridWidth);
     }
@@ -108,7 +140,7 @@ $(document).ready(function() {
     $(window).resize(function () {
         resizetable();
     });
-*/
+
     $('td').on('click', function() {
        $(this).html('&#10008;');
     });

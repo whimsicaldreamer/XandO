@@ -8,7 +8,6 @@ body {
     margin: 0;
 }
 html, body {
-    height: 100%;
     -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     background-color: #ccbb99 !important;
@@ -60,53 +59,45 @@ h4 {
 .playground {
     margin-top: -20px;
     margin-bottom: 0;
-    height: auto;
+    background-color: transparent;
 }
 .boardContainer {
-    height: auto;
     margin: 0 auto;
 }
 #boardGrid {
     margin: 0 auto;
-    max-width: 620px;
-    max-height: 620px;
+    max-width: 600px;
+    table-layout: fixed;
+    border: none;
 }
 #boardGrid td {
-    width: 33.33%;
-    height: 33.33%;
     vertical-align: middle;
     cursor: pointer;
+    border: none;
+}
+#boardGrid td:nth-child(2n + 1) {
+    border-left: 3px solid #336666;
+    border-right: 3px solid #336666;
+}
+#boardGrid td:first-child {
+    border-left: none;
+}
+#boardGrid td:last-child {
+    border-right: none;
+}
+#boardGrid tr {
+    border-top: 3px solid #226611;
+    border-bottom: 3px solid #226611;
+}
+#boardGrid tr:first-child {
+    border-top: none;
+}
+#boardGrid tr:last-child {
+    border-bottom: none;
 }
 .comments {
     height: 200px;
 }
-/*#board, #board td {
-    border: none;
-}
-#board td {
-    vertical-align: middle;
-    cursor: pointer;
-}
-#board td:nth-child(2n + 1) {
-    border-left: 3px solid #336666;
-    border-right: 3px solid #336666;
-}
-#board td:first-child {
-    border-left: none;
-}
-#board td:last-child {
-    border-right: none;
-}
-#board tr {
-    border-top: 3px solid #226611;
-    border-bottom: 3px solid #226611;
-}
-#board tr:first-child {
-    border-top: none;
-}
-#board tr:last-child {
-    border-bottom: none;
-}*/
 @media (min-width: 768px) {
     .boardContainer {
         width: 70%;
