@@ -52,8 +52,28 @@
 
 <div class="jumbotron playground" style="background-color: #1b6d85;">
     <div class="boardContainer" style="background-color: #2b542c;">
-        Grid inside this box where each cell and the table itself should be square in shape
+        <table id="boardGrid" class="table table-bordered">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
     </div>
+</div>
+
+<div class="comments">
+    comments section
 </div>
 
 
@@ -79,22 +99,16 @@
 <script>
 $(document).ready(function() {
     /*function  resizetable() {
-        var elem = $('td');
-        var maxWidth = 180;
-        var newBoxWidth = elem.outerWidth();
-
-        if(newBoxWidth > maxWidth) {
-            newBoxWidth = maxWidth;
-        }
-
-        elem.outerWidth(newBoxWidth);
-        elem.outerHeight(newBoxWidth);
+        var elem = $('#boardGrid');
+        //var maxWidth = 180;
+        var newGridWidth = elem.outerWidth();
+        elem.outerHeight(newGridWidth);
     }
     resizetable();
     $(window).resize(function () {
         resizetable();
-    });*/
-
+    });
+*/
     $('td').on('click', function() {
        $(this).html('&#10008;');
     });

@@ -9,7 +9,6 @@ body {
 }
 html, body {
     height: 100%;
-    /*background-color: #333;*/
     -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     background-color: #ccbb99 !important;
@@ -23,16 +22,6 @@ a:hover, a:active {
 h4 {
     font-family: chalkitup, "sans-serif";
 }
-/*.site-wrapper {
-     width: 100%;
-     height: 100%;
-     min-height: 100%;
-     -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-     box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-     border-top: 5px solid #5A332B;
-     background-color: #ccbb99 !important;
-     overflow-y: auto;
- }*/
 .navbar {
     border-radius: 0;
     border: none;
@@ -44,11 +33,6 @@ h4 {
     color: #ffffff !important;
     font-family: chalkitup, "sans-serif";
 }
-/*.centerMe {
-    position: relative;
-    top: 50%;
-    transform: translateY(-60%);
-}*/
 .scoreboard {
     background-color: #8a6d3b;
     z-index: 1100;
@@ -74,15 +58,29 @@ h4 {
     text-overflow: ellipsis;
 }
 .playground {
-    height: 300px;
+    margin-top: -20px;
+    margin-bottom: 0;
+    height: auto;
 }
 .boardContainer {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    height: auto;
+    margin: 0 auto;
+}
+#boardGrid {
+    margin: 0 auto;
+    max-width: 620px;
+    max-height: 620px;
+}
+#boardGrid td {
+    width: 33.33%;
+    height: 33.33%;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.comments {
     height: 200px;
 }
-#board, #board td {
+/*#board, #board td {
     border: none;
 }
 #board td {
@@ -108,11 +106,10 @@ h4 {
 }
 #board tr:last-child {
     border-bottom: none;
-}
+}*/
 @media (min-width: 768px) {
     .boardContainer {
-        margin-left: 15%;
-        margin-right: 15%;
+        width: 70%;
     }
 }
 @media (min-width: 992px) {
@@ -120,14 +117,15 @@ h4 {
         position: fixed;
         right: 10px;
     }
+    .playground {
+        margin-top: 35px;
+    }
     .boardContainer {
-        margin-left: 20%;
-        margin-right: 20%;
+        width: 60%;
     }
 }
 @media (min-width: 1200px) {
     .boardContainer {
-        margin-left: 25%;
-        margin-right: 25%;
+        width: 50%;
     }
 }
