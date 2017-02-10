@@ -65,6 +65,9 @@ class game
 
     }
 
+    /*
+     * Function to set a player with all details in db
+     */
     function setPlayer($playerName, $boardSize, $roomNumber)
     {
         try {
@@ -80,14 +83,50 @@ class game
         }
     }
 
-    function findPlayer()
+    /*
+     * Function to get the players details
+     */
+    function getPlayer($roomName)
     {
+        try {
+            $stmt = $this->dbh->prepare("SELECT * FROM players WHERE room = :room");
+            $stmt->execute(array(":room" => $roomName));
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            return $result;
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
     }
 
     function removePlayer()
     {
 
+    }
+
+    /*
+     * Generate game board depending on board size
+     */
+    function buildBoard($roomName)
+    {
+        $playerDetails = $this->getPlayer($roomName);
+        $gridSize = $playerDetails[0]['boardSize'];
+
+        if($gridSize == '') {
+            header('Location: index');
+        }
+
+        $structure = "";
+        for($row = 1; $row <= $gridSize; $row++) {
+            $structure .= "<tr>\n";
+            for($col = 1; $col <= $gridSize; $col++) {
+                $structure .= "<td>&nbsp;</td>\n";
+            }
+            $structure .= "</tr>\n";
+        }
+        $structureArr = array('structure' => $structure, 'size' => $gridSize);
+        return $structureArr;
     }
 
     function logError($error)

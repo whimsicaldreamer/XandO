@@ -1,3 +1,13 @@
+<?php
+    require_once 'gameEngine/function.game.php';
+    $roomName = $_GET['room'];
+    if($roomName == '') {
+        header('Location: index');
+    }
+
+    $environmentReady = new game();
+    $structure = $environmentReady->buildBoard($roomName);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,22 +62,10 @@
 
 <div class="jumbotron playground">
     <div class="boardContainer">
-        <table id="boardGrid" class="table table-bordered symbolSize-3">
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
+        <table id="boardGrid" class="table table-bordered symbolSize-<?php echo $structure['size']; ?>">
+            <?php
+            echo $structure['structure'];
+            ?>
         </table>
     </div>
 </div>
