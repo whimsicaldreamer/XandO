@@ -21,5 +21,5 @@ if(isset($_POST['playerName']) && isset($_POST['gridSize'])) {
     $gameRoom = $gameHandler->createRoom(); // Generate a room
     $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
 
-    echo "playground.html?r=".$gameRoom."&s=".$gridSize; // Generate new room link
+    echo "playground.php?r=".$gameRoom."&s=".$gridSize; // Generate new room link
 }
