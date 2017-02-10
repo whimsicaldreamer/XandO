@@ -52,11 +52,8 @@
 
 <div class="jumbotron playground">
     <div class="boardContainer">
-        <table id="boardGrid" class="table table-bordered">
+        <table id="boardGrid" class="table table-bordered symbolSize-3">
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -65,38 +62,8 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -106,21 +73,8 @@
 </div>
 
 <div class="comments" style="background-color: #9d9d9d;">
-    comments section
+    comments section to be made
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -142,7 +96,7 @@ $(document).ready(function() {
     });
 
     $('td').on('click', function() {
-       $(this).html('&#10008;');
+       $(this).html('&#10008;').addClass('crosses');
     });
 });
 </script>

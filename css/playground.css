@@ -72,6 +72,8 @@ h4 {
 }
 #boardGrid td {
     vertical-align: middle;
+    text-align: center;
+    line-height: 0;
     cursor: pointer;
     border: none;
 }
@@ -95,12 +97,42 @@ h4 {
 #boardGrid tr:last-child {
     border-bottom: none;
 }
+.crosses {
+    color: #C92349;
+}
+.noughts {
+    color: #685F8E;
+}
+.symbolSize-6 {
+    font-size: 30px;
+}
+.symbolSize-5 {
+    font-size: 35px;
+}
+.symbolSize-4 {
+    font-size: 40px;
+}
+.symbolSize-3 {
+    font-size: 45px;
+}
 .comments {
     height: 200px;
 }
 @media (min-width: 768px) {
     .boardContainer {
         width: 70%;
+    }
+    .symbolSize-6 {
+        font-size: 40px;
+    }
+    .symbolSize-5 {
+        font-size: 45px;
+    }
+    .symbolSize-4 {
+        font-size: 50px;
+    }
+    .symbolSize-3 {
+        font-size: 55px;
     }
 }
 @media (min-width: 992px) {
@@ -114,9 +146,33 @@ h4 {
     .boardContainer {
         width: 60%;
     }
+    .symbolSize-6 {
+        font-size: 50px;
+    }
+    .symbolSize-5 {
+        font-size: 55px;
+    }
+    .symbolSize-4 {
+        font-size: 60px;
+    }
+    .symbolSize-3 {
+        font-size: 65px;
+    }
 }
 @media (min-width: 1200px) {
     .boardContainer {
         width: 50%;
+    }
+    .symbolSize-6 {
+        font-size: 60px;
+    }
+    .symbolSize-5 {
+        font-size: 65px;
+    }
+    .symbolSize-4 {
+        font-size: 70px;
+    }
+    .symbolSize-3 {
+        font-size: 75px;
     }
 }
