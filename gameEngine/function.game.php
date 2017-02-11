@@ -81,6 +81,7 @@ class game
         catch (Exception $e) {
             $this->logError($e->getMessage());
         }
+        //set a cookie here
     }
 
     /*
@@ -97,7 +98,16 @@ class game
         }
         catch (Exception $e) {
             $this->logError($e->getMessage());
+
+            return null;
         }
+    }
+
+    /*
+     * Function to assign player number
+     */
+    function assignPlayerNumber() {
+
     }
 
     function removePlayer()
