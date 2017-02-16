@@ -6,6 +6,15 @@
     }
 
     $environmentReady = new game();
+
+    if(!$environmentReady->isRoomExists($roomName)) {
+        header('Location: index');
+        die;
+    }
+    if(!isset($_COOKIE["players_local_".$roomName])) {
+        header('Location: index?room='.$roomName.'&action=1');
+    }
+
     $structure = $environmentReady->buildBoard($roomName);
 ?>
 <!DOCTYPE html>

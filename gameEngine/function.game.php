@@ -81,7 +81,8 @@ class game
         catch (Exception $e) {
             $this->logError($e->getMessage());
         }
-        //set a cookie here
+        // ToDo Change cookie name before deployment
+        setcookie("players_local_".$roomNumber, $roomNumber, time() + (86400 * 2), "/");
     }
 
     /*
@@ -106,7 +107,8 @@ class game
     /*
      * Function to assign player number
      */
-    function assignPlayerNumber() {
+    function assignPlayerNumber()
+    {
 
     }
 
@@ -123,10 +125,6 @@ class game
         $playerDetails = $this->getPlayer($roomName);
         $gridSize = $playerDetails[0]['boardSize'];
 
-        if($gridSize == '') {
-            header('Location: index');
-        }
-
         $structure = "";
         for($row = 1; $row <= $gridSize; $row++) {
             $structure .= "<tr>\n";
@@ -137,6 +135,26 @@ class game
         }
         $structureArr = array('structure' => $structure, 'size' => $gridSize);
         return $structureArr;
+    }
+
+    /*
+     *  Function to get board size
+     */
+    function getBoardSize($roomName)
+    {
+        try {
+            $stmt = $this->dbh->prepare("SELECT boardSize FROM players WHERE room = :room");
+            $stmt->execute(array(":room" => $roomName));
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(!$result) {
+                return null;
+            }
+            return $result[0]['boardSize'];
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+            return null;
+        }
     }
 
     function logError($error)

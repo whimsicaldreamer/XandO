@@ -1,3 +1,17 @@
+<?php
+    $state  = "";
+    $boardSize = "";
+    if($_GET) {
+        $action = $_GET['action'];
+        $room   = $_GET['room'];
+        if ($action == 1) {
+            require_once 'gameEngine/function.game.php';
+            $environmentReady = new game();
+            $boardSize = $environmentReady->getBoardSize($room);
+            $state = "disabled = 'disabled'";
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,11 +45,18 @@
                         <span class="input-group-addon" id="basic-addon2">
                             <span class="ion ion-ios-grid-view-outline"></span> Board
                         </span>
-                        <select id="boardSize" class="form-control form-inline text-center" title="Select Board Size">
+                        <select id="boardSize" class="form-control form-inline text-center" title="Select Board Size" <?php echo $state; ?>>
                             <option>3 X 3</option>
                             <option>4 X 4</option>
                             <option>5 X 5</option>
                             <option>6 X 6</option>
+                            <?php
+                            if($boardSize != "") {
+                            ?>
+                                <option selected="selected"><?php echo $boardSize.' X '.$boardSize; ?></option>
+                            <?php
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
