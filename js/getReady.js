@@ -4,15 +4,17 @@
 $(document).ready(function() {
     //On click of start button
     $('#start').on('click', function() {
-        var playerName  =   $('#user').val();
-        var gridSize    =   $('#boardSize').val();
+        var playerName = $('#user').val();
+        var gridSize   = $('#boardSize').val();
+        var room       = $('#room').val();
 
         $.ajax({
            type: "POST",
             url: "gameEngine/app.php",
             data: {
                 playerName: playerName,
-                gridSize: gridSize
+                gridSize: gridSize,
+                room: room
             },
             success: function (response) {
                 console.log(response);

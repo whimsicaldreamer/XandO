@@ -1,15 +1,13 @@
 <?php
     $state  = "";
     $boardSize = "";
-    if($_GET) {
-        $action = $_GET['action'];
-        $room   = $_GET['room'];
-        if ($action == 1) {
-            require_once 'gameEngine/function.game.php';
-            $environmentReady = new game();
-            $boardSize = $environmentReady->getBoardSize($room);
-            $state = "disabled = 'disabled'";
-        }
+    $room = !empty($_GET['room']) ? $_GET['room'] : '';
+    $action = !empty($_GET['action']) ? $_GET['action'] : '';
+    if ($action == 1) {
+        require_once 'gameEngine/function.game.php';
+        $environmentReady = new game();
+        $boardSize = $environmentReady->getBoardSize($room);
+        $state = "disabled = 'disabled'";
     }
 ?>
 <!DOCTYPE html>
@@ -64,6 +62,7 @@
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-4">
                     <button id="start" type="button" class="btn btn-default btn-lg btn-block">Let's Play!</button>
+                    <input type="hidden" id="room" value="<?= $room ?>">
                 </div>
             </div>
         </div>
