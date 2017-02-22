@@ -41,23 +41,15 @@ class game
      */
     function isRoomExists($room)
     {
-        $count = 0;
         try {
             $stmt = $this->dbh->prepare("SELECT room FROM players WHERE room = :room");
             $stmt->execute(array(":room" => $room));
-            $count = $stmt->rowCount();
+            return $stmt->rowCount() > 0;
         }
         catch (Exception $e) {
             $this->logError($e->getMessage());
         }
-
-        //Return boolean values depending on whether a room is already present
-        if ($count > 0) {
-           return true;
-        }
-        else {
-           return false;
-        }
+        return false;
     }
 
     function destroyRoom()
