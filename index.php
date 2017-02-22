@@ -25,7 +25,7 @@
 <body>
 <div class="container-fluid site-wrapper">
     <div class="centerMe">
-        <h1>n<span class="highlightO">o</span>ughts <span class="highlightX">X</span> cr<span class="highlightO">o</span>sses</h1>
+        <a href="index"><h1>n<span class="highlightO">o</span>ughts <span class="highlightX">X</span> cr<span class="highlightO">o</span>sses</h1></a>
         <p id="subHeader"><small>an age old time killer game</small></p>
 
         <div class="container-fluid">

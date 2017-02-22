@@ -15,6 +15,8 @@ html, body {
 }
 a {
     color: #ffffff;
+    text-decoration: none !important;
+    cursor: default;
 }
 a:hover, a:active {
     color: #ffffff;

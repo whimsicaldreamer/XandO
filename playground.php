@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-md-9 col-xs-12">
                 <div class="navbar-header">
-                    <a class="navbar-brand"><span class="icon ion-arrow-left-c"></span> Back</a>
+                    <a href="index" class="navbar-brand"><span class="icon ion-arrow-left-c"></span> Back</a>
                 </div>
             </div>
             <div class="col-md-3 col-xs-12 scoreboard">

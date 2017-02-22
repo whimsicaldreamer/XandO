@@ -22,7 +22,12 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
     if (empty($gameRoom)) {
         $gameRoom = $gameHandler->createRoom(); // Generate a room
     }
-    $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
+    if($gameHandler->isRoomEmpty($gameRoom)) {
+        $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
+    }
+    else {
+        header('Location: index');
+    }
 
     echo "playground?room=".$gameRoom; // Generate new room link
 }

@@ -52,6 +52,22 @@ class game
         return false;
     }
 
+    /*
+     * Function to check whether the room has 2 players
+     */
+    function isRoomEmpty($room)
+    {
+        try {
+            $stmt = $this->dbh->prepare("SELECT playerName FROM players WHERE room = :room");
+            $stmt->execute(array(":room" => $room));
+            return $stmt->rowCount() <= 2;
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
+        return false;
+    }
+
     function destroyRoom()
     {
 
