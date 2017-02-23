@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2017 at 07:40 AM
+-- Generation Time: Feb 23, 2017 at 05:07 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -30,6 +30,7 @@ USE `noughtsandcrosses`;
 
 CREATE TABLE `players` (
   `id` int(11) NOT NULL,
+  `playerId` int(255) NOT NULL,
   `room` varchar(9) NOT NULL,
   `playerName` varchar(512) NOT NULL,
   `boardSize` int(1) NOT NULL

@@ -47,14 +47,14 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <div class="counter-outer">
-                            <span class="score clearfix">0</span>
-                            <div class="detail">Player 1</div>
+                            <span id="p1_score" class="score clearfix">0</span>
+                            <div id="p1_name" class="detail">Player 1</div>
                         </div>
                     </div>
                     <div class="col-xs-4">
                         <div class="counter-outer">
-                            <span class="score clearfix">0</span>
-                            <span class="detail">Player 2</span>
+                            <span id="p2_score" class="score clearfix">0</span>
+                            <span id="p2_name" class="detail">Player 2</span>
                         </div>
                     </div>
                     <div class="col-xs-4">
@@ -78,7 +78,7 @@
         </table>
     </div>
 </div>
-
+<input id="room" type="hidden" value="<?= $roomName ?>">
 <div class="comments" style="background-color: #9d9d9d;">
     comments section to be made
 </div>
@@ -89,23 +89,6 @@
 
 
 <script src="js/jquery-2.1.3.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function() {
-    function  resizetable() {
-        var elem = $('#boardGrid');
-        var newGridWidth = elem.outerWidth();
-        elem.outerHeight(newGridWidth);
-    }
-    resizetable();
-    $(window).resize(function () {
-        resizetable();
-    });
-
-    $('td').on('click', function() {
-       $(this).html('&#10008;').addClass('crosses');
-    });
-});
-</script>
+<script src="js/app.js"></script>
 </body>
 </html>

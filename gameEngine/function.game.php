@@ -78,9 +78,11 @@ class game
      */
     function setPlayer($playerName, $boardSize, $roomNumber)
     {
+        $playerId = rand();
         try {
-            $stmt = $this->dbh->prepare("INSERT INTO players(room, playerName, boardSize) VALUES (:roomNumber, :playerName, :boardSize)");
+            $stmt = $this->dbh->prepare("INSERT INTO players(playerId, room, playerName, boardSize) VALUES (:playerId, :roomNumber, :playerName, :boardSize)");
             $stmt->execute(array(
+                ":playerId" =>  $playerId,
                 ":roomNumber" => $roomNumber,
                 ":playerName" => $playerName,
                 ":boardSize" => $boardSize
@@ -90,7 +92,7 @@ class game
             $this->logError($e->getMessage());
         }
         // ToDo Change cookie name before deployment
-        setcookie("players_local_".$roomNumber, $roomNumber, time() + (86400 * 2), "/");
+        setcookie("players_local_".$roomNumber, $playerId, time() + (86400 * 2), "/");
     }
 
     /*
@@ -113,11 +115,19 @@ class game
     }
 
     /*
-     * Function to assign player number
+     * Function to get player order number
      */
-    function assignPlayerNumber()
+    function getPlayerOrder($roomName)
     {
-
+        $resultSet = $this->getPlayer($roomName);
+        $count = count($resultSet);
+        if($count < 2) {
+            $retData = array('p1_name' => $resultSet[0]['playerName']);
+        }
+        else {
+            $retData = array('p1_name' => $resultSet[0]['playerName'], 'p2_name' => $resultSet[1]['playerName']);
+        }
+        return json_encode($retData);
     }
 
     function removePlayer()
