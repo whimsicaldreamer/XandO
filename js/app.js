@@ -27,8 +27,8 @@ $(document).ready(function () {
      */
     var allJoined = false;
     var roomName = $('#room').val();
-    if(!allJoined) {
-        var timeout = setTimeout(function () {
+    var timeout = function () {
+        if(!allJoined) {
             $.ajax({
                 type: "POST",
                 url: "gameEngine/app.php",
@@ -52,7 +52,8 @@ $(document).ready(function () {
                     console.log(error);
                 }
             });
-        }, 3000);
-    }
+        }
+    };
+    setTimeout(timeout, 2000);
 
 });
