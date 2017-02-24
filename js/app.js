@@ -41,11 +41,13 @@ $(document).ready(function () {
                     var count = Object.keys(obj).length;
                     if (count == 1) {
                         playerOne_name.html(obj.p1_name);
+                        setTimeout(timeout, 3000);
                     }
                     else if (count == 2) {
                         playerOne_name.html(obj.p1_name);
                         playerTwo_name.html(obj.p2_name);
                         allJoined = true;
+                        clearTimeout(timeout);
                     }
                 },
                 error: function (error) {
@@ -54,6 +56,6 @@ $(document).ready(function () {
             });
         }
     };
-    setTimeout(timeout, 2000);
+    setTimeout(timeout, 3000);
 
 });
