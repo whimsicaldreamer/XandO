@@ -233,6 +233,5 @@ class game
         fwrite($logFile, date('[Y-m-d H:i:s] ') . $error . PHP_EOL);
         fclose($logFile);
     }
-
-
+    
 }
