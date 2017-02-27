@@ -31,8 +31,12 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
 
     echo "playground?room=".$gameRoom; // Generate new room link
 }
-elseif (isset($_POST['activity']) == 1 && isset($_POST['room'])) {
+elseif (isset($_POST['activityCode']) == 1 && $_POST['activityCode'] == 1 && isset($_POST['room'])) {
     $response = $gameHandler->getPlayerOrder($_POST['room']);
 
     echo $response;
+}
+elseif (isset($_POST['activityCode']) == 2 && $_POST['activityCode'] == 2 && isset($_POST['room'])) {
+    $status = $gameHandler->isPlayerAlive($_POST['room']);
+    echo $status;
 }

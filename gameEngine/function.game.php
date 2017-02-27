@@ -80,12 +80,13 @@ class game
     {
         $playerId = rand();
         try {
-            $stmt = $this->dbh->prepare("INSERT INTO players(playerId, room, playerName, boardSize) VALUES (:playerId, :roomNumber, :playerName, :boardSize)");
+            $stmt = $this->dbh->prepare("INSERT INTO players(playerId, room, playerName, boardSize, lastPing) VALUES (:playerId, :roomNumber, :playerName, :boardSize, :lastPing)");
             $stmt->execute(array(
                 ":playerId" =>  $playerId,
                 ":roomNumber" => $roomNumber,
                 ":playerName" => $playerName,
-                ":boardSize" => $boardSize
+                ":boardSize" => $boardSize,
+                ":lastPing" => time()
             ));
         }
         catch (Exception $e) {
@@ -101,7 +102,7 @@ class game
     function getPlayer($roomName)
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM players WHERE room = :room");
+            $stmt = $this->dbh->prepare("SELECT * FROM players WHERE room = :room ORDER BY id ASC");
             $stmt->execute(array(":room" => $roomName));
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -130,9 +131,60 @@ class game
         return json_encode($retData);
     }
 
-    function removePlayer()
+    /*
+     * Function to check whether the particular player is alive
+     */
+    function isPlayerAlive($roomName)
     {
+        $resultSet = $this->getPlayer($roomName);
+        $playerId = $_COOKIE['players_local_'.$roomName];
+        $res = current($this->findOtherPlayer($resultSet, 'playerId', $playerId));
+        $lastPing = $res['lastPing'];
+        $now = time();
+        $timeGap = $now - $lastPing;
 
+        if($timeGap > 30) {
+            $this->removePlayer($playerId, $roomName);
+            return true;
+        }
+        else {
+            try {
+                $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
+                $stmt->execute(array(
+                    ":now" => $now,
+                    ":playerID" => $playerId,
+                    ":roomName" => $roomName
+                ));
+            } catch (Exception $e) {
+                $this->logError($e->getMessage());
+            }
+            return false;
+        }
+    }
+
+    /*
+     * Function to get the opponent player details
+     */
+    function findOtherPlayer($result, $key, $value) {
+        return array_filter($result, function ($v) use ($key, $value)  {
+            return $v[$key] !== $value;
+        });
+    }
+
+    /*
+     * Function to get rid of a player
+     */
+    function removePlayer($playerId, $roomName)
+    {
+        try {
+            $stmt = $this->dbh->prepare("DELETE FROM players WHERE playerId =  :playerId AND room = :roomName");
+            $stmt->execute(array(
+                ":playerId" => $playerId,
+                ":roomName" => $roomName
+            ));
+        } catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
     }
 
     /*

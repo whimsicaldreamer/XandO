@@ -14,6 +14,14 @@
     if(!isset($_COOKIE["players_local_".$roomName])) {
         header('Location: index?room='.$roomName.'&action=1');
     }
+    else {
+        $playerId = $_COOKIE["players_local_".$roomName];
+        $allPlayers = $environmentReady->getPlayer($roomName);
+        $key = array_search($playerId, array_column($allPlayers, 'playerId'));
+        if(!$key) {
+            header('Location: index?room='.$roomName.'&action=1');
+        }
+    }
 
     $structure = $environmentReady->buildBoard($roomName);
 ?>
