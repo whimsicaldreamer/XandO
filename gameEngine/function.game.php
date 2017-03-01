@@ -138,28 +138,29 @@ class game
     {
         $resultSet = $this->getPlayer($roomName);
         $playerId = $_COOKIE['players_local_'.$roomName];
+        //Get the other player details
         $res = current($this->findOtherPlayer($resultSet, 'playerId', $playerId));
-        $lastPing = $res['lastPing'];
+        $lastPing = $res['lastPing']; //Get the other player's last ping time
+        $IdToRemove = $res['playerId']; // Get the other player's id
         $now = time();
         $timeGap = $now - $lastPing;
 
         if($timeGap > 30) {
-            $this->removePlayer($playerId, $roomName);
+            $this->removePlayer($IdToRemove, $roomName);
             return true;
         }
-        else {
-            try {
-                $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
-                $stmt->execute(array(
-                    ":now" => $now,
-                    ":playerID" => $playerId,
-                    ":roomName" => $roomName
-                ));
-            } catch (Exception $e) {
-                $this->logError($e->getMessage());
-            }
-            return false;
+        //Update your own last ping time
+        try {
+            $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
+            $stmt->execute(array(
+                ":now" => $now,
+                ":playerID" => $playerId,
+                ":roomName" => $roomName
+            ));
+        } catch (Exception $e) {
+            $this->logError($e->getMessage());
         }
+        return null;
     }
 
     /*
@@ -233,5 +234,5 @@ class game
         fwrite($logFile, date('[Y-m-d H:i:s] ') . $error . PHP_EOL);
         fclose($logFile);
     }
-    
+
 }

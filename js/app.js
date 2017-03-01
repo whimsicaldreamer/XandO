@@ -51,7 +51,7 @@ $(document).ready(function () {
                         playerTwo_name.html(obj.p2_name);
                         allJoined = true;
                         //Start the heartbeat to check if the other player is alive
-                        var hb = setTimeout(startHeartbeat, 15000);
+                        setTimeout(startHeartbeat, 15000);
                         clearTimeout(playerNameSet);
                     }
                 },
