@@ -40,18 +40,20 @@ $(document).ready(function () {
                     room: roomName
                 },
                 success: function (ScoreBoardResponse) {
+                    console.log('checking');
                     var obj = JSON.parse(ScoreBoardResponse);
                     var count = Object.keys(obj).length;
                     if (count == 1) {
+                        console.log('1 player available');
                         playerOne_name.html(obj.p1_name);
                         setTimeout(playerNameSet, 3000);
                     }
                     else if (count == 2) {
+                        console.log('2 player available');
                         playerOne_name.html(obj.p1_name);
                         playerTwo_name.html(obj.p2_name);
                         allJoined = true;
-                        //Start the heartbeat to check if the other player is alive
-                        setTimeout(startHeartbeat, 15000);
+                        console.log('Clearing timeout');
                         clearTimeout(playerNameSet);
                     }
                 },
@@ -69,6 +71,7 @@ $(document).ready(function () {
      * Interval of 15 sec
      */
     function startHeartbeat() {
+        console.log('throbbing...');
         $.ajax({
             type: "POST",
             url: "gameEngine/app.php",
@@ -79,6 +82,7 @@ $(document).ready(function () {
             success: function(beat) {
                 if(beat) {
                     console.log("dead");
+                    setTimeout(playerNameSet, 3000);
                 }
                 else {
                     console.log("alive");
@@ -90,5 +94,5 @@ $(document).ready(function () {
         });
         setTimeout(startHeartbeat, 15000);
     }
-
+    setTimeout(startHeartbeat, 15000);
 });
