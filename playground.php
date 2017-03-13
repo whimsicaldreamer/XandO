@@ -1,30 +1,35 @@
 <?php
-    require_once 'gameEngine/function.game.php';
+    require_once 'gameEngine/game.class.php';
     $roomName = $_GET['room'];
-    if($roomName == '') {
+    if ($roomName == '') {
         header('Location: index');
     }
 
-    $environmentReady = new game();
+    $gameHandler = new game();
 
-    if(!$environmentReady->isRoomExists($roomName)) {
+    if (!$gameHandler->isRoomExists($roomName)) {
         header('Location: index');
         die;
     }
-    if(!isset($_COOKIE["players_local_".$roomName])) {
-        header('Location: index?room='.$roomName.'&action=1');
+    if (!isset($_COOKIE["players_local_".$roomName])) {
+        header('Location: index?room='.$roomName.'&action=join');
+        die;
+    }
+    if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_local_".$roomName])) {
+        header('Location: index?room='.$roomName.'&action=join');
+        die;
     }
     /*
     else {
         $playerId = $_COOKIE["players_local_".$roomName];
-        $allPlayers = $environmentReady->getPlayer($roomName);
+        $allPlayers = $environmentReady->getPlayers($roomName);
         $key = array_search($playerId, array_column($allPlayers, 'playerId'));
         if(!$key) {
             header('Location: index?room='.$roomName.'&action=1');
         }
     }*/
 
-    $structure = $environmentReady->buildBoard($roomName);
+    $structure = $gameHandler->buildBoard($roomName);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,8 +55,8 @@
             <div class="col-md-3 col-xs-12 scoreboard">
                 <div class="row">
                     <div class="col-xs-12">
-                            <h4><span class="text-center">Scoreboard</span></h4>
-                        </div>
+                        <h4><span class="text-center">Scoreboard</span></h4>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-4">
@@ -80,10 +85,8 @@
 
 <div class="jumbotron playground">
     <div class="boardContainer">
-        <table id="boardGrid" class="table table-bordered symbolSize-<?php echo $structure['size']; ?>">
-            <?php
-            echo $structure['structure'];
-            ?>
+        <table id="boardGrid" class="table table-bordered symbolSize-<?= $structure['size'] ?>">
+            <?= $structure['structure'] ?>
         </table>
     </div>
 </div>
@@ -91,10 +94,6 @@
 <div class="comments" style="background-color: #9d9d9d;">
     comments section to be made
 </div>
-
-
-
-
 
 
 <script src="js/jquery-2.1.3.min.js"></script>

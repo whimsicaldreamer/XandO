@@ -6,16 +6,16 @@
  * Date: 2/2/2017
  * Time: 8:17 PM
  */
-require_once 'function.connect.php';
+require_once 'connection.class.php';
 
 class game
 {
-    /*
+    /**
      * Holds the database connection
      */
     public $dbh;
 
-    /*
+    /**
      * Start the database connection
      */
     public function __construct()
@@ -24,19 +24,19 @@ class game
         $this->dbh = $this->connection->connect();
     }
 
-    /*
+    /**
      * Function to create a new room
      */
-    function createRoom()
+    function generateRoom()
     {
         $roomNumber = bin2hex(openssl_random_pseudo_bytes(4));
-        if($this->isRoomExists($roomNumber)) {
-            $this->createRoom();
+        if ($this->isRoomExists($roomNumber)) {
+            $this->generateRoom();
         }
         return $roomNumber;
     }
 
-    /*
+    /**
      * Function to check whether the room created already exists
      */
     function isRoomExists($room)
@@ -52,7 +52,7 @@ class game
         return false;
     }
 
-    /*
+    /**
      * Function to check whether the room has 2 players
      */
     function isRoomEmpty($room)
@@ -73,12 +73,12 @@ class game
 
     }
 
-    /*
+    /**
      * Function to set a player with all details in db
      */
     function setPlayer($playerName, $boardSize, $roomNumber)
     {
-        $playerId = rand();
+        $playerId = mt_rand();
         try {
             $stmt = $this->dbh->prepare("INSERT INTO players(playerId, room, playerName, boardSize, lastPing) VALUES (:playerId, :roomNumber, :playerName, :boardSize, :lastPing)");
             $stmt->execute(array(
@@ -96,10 +96,10 @@ class game
         setcookie("players_local_".$roomNumber, $playerId, time() + (86400 * 2), "/");
     }
 
-    /*
+    /**
      * Function to get the players details
      */
-    function getPlayer($roomName)
+    function getPlayers($roomName)
     {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM players WHERE room = :room ORDER BY id ASC");
@@ -115,70 +115,43 @@ class game
         }
     }
 
-    /*
+    /**
      * Function to get player order number
      */
-    function getPlayerOrder($roomName)
+    function getPlayersNames($roomName)
     {
-        $resultSet = $this->getPlayer($roomName);
-        $count = count($resultSet);
-        if($count < 2) {
-            $retData = array('p1_name' => $resultSet[0]['playerName']);
+        $resultSet = $this->getPlayers($roomName);
+        $result = [];
+        $count = 1;
+        foreach ($resultSet as $player) {
+            $result[sprintf('p%d_name', $count++)] = $player['playerName'];
         }
-        else {
-            $retData = array('p1_name' => $resultSet[0]['playerName'], 'p2_name' => $resultSet[1]['playerName']);
-        }
-        return json_encode($retData);
+        return $result;
     }
 
-    /*
-     * Function to check whether the particular player is alive
-     */
-    function isPlayerAlive($roomName)
+    public function findPlayer($roomName, $playerId)
     {
-        $resultSet = $this->getPlayer($roomName);
-        $playerId = $_COOKIE['players_local_'.$roomName];
-        //Get the other player details
-        $res = current($this->findOtherPlayer($resultSet, 'playerId', $playerId));
-        $lastPing = $res['lastPing']; //Get the other player's last ping time
-        $IdToRemove = $res['playerId']; // Get the other player's id
-        $now = time();
-        $timeGap = $now - $lastPing;
-
-        if($timeGap > 30) {
-            $this->removePlayer($IdToRemove, $roomName);
-            return true;
-        }
-        //Update your own last ping time
         try {
-            $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
+            $stmt = $this->dbh->prepare("SELECT id FROM players WHERE playerId = :playerId AND room = :roomName");
             $stmt->execute(array(
-                ":now" => $now,
-                ":playerID" => $playerId,
+                ":playerId" => $playerId,
                 ":roomName" => $roomName
             ));
+
+            return $stmt->rowCount() > 0;
         } catch (Exception $e) {
             $this->logError($e->getMessage());
         }
-        return null;
+        return false;
     }
 
-    /*
-     * Function to get the opponent player details
-     */
-    function findOtherPlayer($result, $key, $value) {
-        return array_filter($result, function ($v) use ($key, $value)  {
-            return $v[$key] !== $value;
-        });
-    }
-
-    /*
+    /**
      * Function to get rid of a player
      */
     function removePlayer($playerId, $roomName)
     {
         try {
-            $stmt = $this->dbh->prepare("DELETE FROM players WHERE playerId =  :playerId AND room = :roomName");
+            $stmt = $this->dbh->prepare("DELETE FROM players WHERE playerId = :playerId AND room = :roomName");
             $stmt->execute(array(
                 ":playerId" => $playerId,
                 ":roomName" => $roomName
@@ -188,12 +161,12 @@ class game
         }
     }
 
-    /*
+    /**
      * Generate game board depending on board size
      */
     function buildBoard($roomName)
     {
-        $playerDetails = $this->getPlayer($roomName);
+        $playerDetails = $this->getPlayers($roomName);
         $gridSize = $playerDetails[0]['boardSize'];
 
         $structure = "";
@@ -208,7 +181,7 @@ class game
         return $structureArr;
     }
 
-    /*
+    /**
      *  Function to get board size
      */
     function getBoardSize($roomName)
@@ -235,4 +208,36 @@ class game
         fclose($logFile);
     }
 
+    /**
+     * Update your own last ping time
+     */
+    public function updatePing($roomName)
+    {
+        $playerId = $_COOKIE['players_local_'.$roomName];
+        $now = time();
+        try {
+            $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
+            $stmt->execute(array(
+                ":now" => $now,
+                ":playerID" => $playerId,
+                ":roomName" => $roomName
+            ));
+        } catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function removeInactive($roomName, $timeout = 30)
+    {
+        try {
+            $stmt = $this->dbh->prepare("DELETE FROM players WHERE room = :roomName AND :now - lastPing > :timeout");
+            $stmt->execute(array(
+                ":roomName" => $roomName,
+                ":now" => time(),
+                ":timeout" => $timeout,
+            ));
+        } catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
+    }
 }

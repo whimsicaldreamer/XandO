@@ -30,69 +30,21 @@ $(document).ready(function () {
      */
     var allJoined = false;
     var roomName = $('#room').val();
-    var playerNameSet = function () {
-        if(!allJoined) {
-            $.ajax({
-                type: "POST",
-                url: "gameEngine/app.php",
-                data: {
-                    activityCode: 1,
-                    room: roomName
-                },
-                success: function (ScoreBoardResponse) {
-                    console.log('checking');
-                    var obj = JSON.parse(ScoreBoardResponse);
-                    var count = Object.keys(obj).length;
-                    if (count == 1) {
-                        console.log('1 player available');
-                        playerOne_name.html(obj.p1_name);
-                        setTimeout(playerNameSet, 3000);
-                    }
-                    else if (count == 2) {
-                        console.log('2 player available');
-                        playerOne_name.html(obj.p1_name);
-                        playerTwo_name.html(obj.p2_name);
-                        allJoined = true;
-                        console.log('Clearing timeout');
-                        clearTimeout(playerNameSet);
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
+
+    function updateState() {
+        console.log('update state');
+        $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
+            // update game table
+            var players = JSON.parse(response);
+            jQuery.each(['p1_name', 'p2_name'], function(_, key) {
+                if (players[key]) {
+                    $('#' + key).html(players[key]);
+                } else {
+                    $('#' + key).html('---');
                 }
             });
-        }
-    };
-    setTimeout(playerNameSet, 3000);
-
-    /**
-     * Heartbeat
-     * Check whether the other player is live
-     * Interval of 15 sec
-     */
-    function startHeartbeat() {
-        console.log('throbbing...');
-        $.ajax({
-            type: "POST",
-            url: "gameEngine/app.php",
-            data: {
-                activityCode: 2,
-                room: roomName
-            },
-            success: function(beat) {
-                if(beat) {
-                    console.log("dead");
-                    setTimeout(playerNameSet, 3000);
-                }
-                else {
-                    console.log("alive");
-                }
-            },
-            error: function(error) {
-                console.log(error);
-            }
+            setTimeout(updateState, 5000);
         });
-        setTimeout(startHeartbeat, 15000);
     }
-    setTimeout(startHeartbeat, 15000);
+    updateState();
 });

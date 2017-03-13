@@ -5,7 +5,7 @@
  * Date: 2/2/2017
  * Time: 6:58 PM
  */
-require_once 'function.game.php'; // Require the game class to set the game environment
+require_once 'game.class.php'; // Require the game class to set the game environment
 $gameHandler = new game(); //Create new instance of game class
 
 if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
@@ -20,9 +20,9 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
     }
 
     if (empty($gameRoom)) {
-        $gameRoom = $gameHandler->createRoom(); // Generate a room
+        $gameRoom = $gameHandler->generateRoom(); // Generate a room
     }
-    if($gameHandler->isRoomEmpty($gameRoom)) {
+    if ($gameHandler->isRoomEmpty($gameRoom)) {
         $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
     }
     else {
@@ -31,12 +31,15 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
 
     echo "playground?room=".$gameRoom; // Generate new room link
 }
-elseif (isset($_POST['activityCode']) == 1 && $_POST['activityCode'] == 1 && isset($_POST['room'])) {
-    $response = $gameHandler->getPlayerOrder($_POST['room']);
 
-    echo $response;
+// all the following actions depends on $_POST['room'] parameter
+if (empty($_POST['room'])) {
+    die;
 }
-elseif (isset($_POST['activityCode']) == 2 && $_POST['activityCode'] == 2 && isset($_POST['room'])) {
-    $status = $gameHandler->isPlayerAlive($_POST['room']);
-    echo $status;
+
+if (!empty($_POST['action']) && 'update' == $_POST['action']) {
+    $gameHandler->updatePing($_POST['room']);
+    $gameHandler->removeInactive($_POST['room']);
+
+    echo json_encode($gameHandler->getPlayersNames($_POST['room']));
 }

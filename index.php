@@ -3,8 +3,8 @@
     $boardSize = "";
     $room = !empty($_GET['room']) ? $_GET['room'] : '';
     $action = !empty($_GET['action']) ? $_GET['action'] : '';
-    if ($action == 1) {
-        require_once 'gameEngine/function.game.php';
+    if ('join' == $action) {
+        require_once 'gameEngine/game.class.php';
         $environmentReady = new game();
         $boardSize = $environmentReady->getBoardSize($room);
         $state = "disabled = 'disabled'";
