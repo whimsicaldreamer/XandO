@@ -22,7 +22,8 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
     if (empty($gameRoom)) {
         $gameRoom = $gameHandler->generateRoom(); // Generate a room
     }
-    if ($gameHandler->isRoomEmpty($gameRoom)) {
+
+    if ($gameHandler->isRoomEmpty($gameRoom) < 2) {
         $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
     }
     else {

@@ -19,15 +19,6 @@
         header('Location: index?room='.$roomName.'&action=join');
         die;
     }
-    /*
-    else {
-        $playerId = $_COOKIE["players_local_".$roomName];
-        $allPlayers = $environmentReady->getPlayers($roomName);
-        $key = array_search($playerId, array_column($allPlayers, 'playerId'));
-        if(!$key) {
-            header('Location: index?room='.$roomName.'&action=1');
-        }
-    }*/
 
     $structure = $gameHandler->buildBoard($roomName);
 ?>
