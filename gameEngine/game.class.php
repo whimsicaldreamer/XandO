@@ -60,7 +60,7 @@ class game
         try {
             $stmt = $this->dbh->prepare("SELECT playerName FROM players WHERE room = :room");
             $stmt->execute(array(":room" => $room));
-            return $stmt->rowCount() <= 2;
+            return $stmt->rowCount() < 2;
         }
         catch (Exception $e) {
             $this->logError($e->getMessage());
