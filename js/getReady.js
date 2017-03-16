@@ -18,6 +18,11 @@ $(document).ready(function() {
             },
             success: function (response) {
                 console.log(response);
+                if ('index' == response) {
+                    alert('Room is full');
+                    window.location.href = 'index';
+                    return;
+                }
                 window.location.href = response;
             },
             error: function(error) {
