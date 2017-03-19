@@ -28,11 +28,9 @@ $(document).ready(function () {
      * Update Player name on joining
      * Stop auto refreshing when both player joins
      */
-    var allJoined = false;
     var roomName = $('#room').val();
 
     function updateState() {
-        console.log('update state');
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             // update game table
             var players = JSON.parse(response);

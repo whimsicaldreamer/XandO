@@ -23,6 +23,7 @@
     <link href="css/ionicons.min.css" rel="stylesheet">
 </head>
 <body>
+<div id="notification" class="alert alert-danger notification animated bounceInDown" role="alert"><strong>Oh Snap!</strong> Looks like the room is full. Try a new one!</div>
 <div class="container-fluid site-wrapper">
     <div class="centerMe">
         <a href="index"><h1>n<span class="highlightO">o</span>ughts <span class="highlightX">X</span> cr<span class="highlightO">o</span>sses</h1></a>

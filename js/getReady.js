@@ -17,10 +17,8 @@ $(document).ready(function() {
                 room: room
             },
             success: function (response) {
-                console.log(response);
                 if ('index' == response) {
-                    alert('Room is full');
-                    window.location.href = 'index';
+                    window.location.href = 'index#notification';
                     return;
                 }
                 window.location.href = response;
@@ -29,5 +27,10 @@ $(document).ready(function() {
                console.log(error);
             }
         });
+    });
+    //Hide notification on clicking anywhere on the notification div
+    $('#notification').on('click', function () {
+       $(this).removeClass('bounceInDown').addClass('bounceOutUp');
+       //ToDo Try removing the hash from URL on closing the notification
     });
 });
