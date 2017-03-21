@@ -29,8 +29,8 @@ $(document).ready(function() {
         });
     });
     //Hide notification on clicking anywhere on the notification div
-    $('#notification').on('click', function () {
-       $(this).removeClass('bounceInDown').addClass('bounceOutUp');
-       //ToDo Try removing the hash from URL on closing the notification
+    $('body').on('click', function () {
+       $('#notification').removeClass('bounceInDown').addClass('bounceOutUp');
+        history.replaceState("", document.title, window.location.pathname);
     });
 });
