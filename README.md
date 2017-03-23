@@ -1,6 +1,6 @@
 # XandO
-###### Multiplayer Noughts and Crosses game using PHP, AJAX and jQuery
-The game is not completed yet and so not yet ready to be played.
+#### Multiplayer Noughts and Crosses game using PHP, AJAX and jQuery
+###### The game is not completed yet and so not yet ready to be played.
 
 ### Work Done:
 - Creation of game room
