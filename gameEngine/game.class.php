@@ -25,7 +25,7 @@ class game
     }
 
     /**
-     * Function to create a new room
+     * Function to create a new game room
      */
     public function generateRoom()
     {
@@ -104,7 +104,7 @@ class game
     }
 
     /**
-     * Function to get the players details
+     * Function to get details of all players in a room
      * @param $roomName
      * @return array|null
      */
@@ -125,7 +125,7 @@ class game
     }
 
     /**
-     * Function to get player order number
+     * Function to get player names in order
      * @param $roomName
      * @return array
      */
@@ -202,12 +202,13 @@ class game
     {
         $playerDetails = $this->getPlayers($roomName);
         $gridSize = $playerDetails[0]['boardSize'];
-
+        $cellNumber = 0;
         $structure = "";
         for($row = 1; $row <= $gridSize; $row++) {
             $structure .= "<tr>\n";
             for($col = 1; $col <= $gridSize; $col++) {
-                $structure .= "<td>&nbsp;</td>\n";
+                $structure .= "<td data-cell=$cellNumber>&nbsp;</td>\n";
+                $cellNumber++;
             }
             $structure .= "</tr>\n";
         }
@@ -216,7 +217,7 @@ class game
     }
 
     /**
-     *  Function to get board size
+     * Function to get board size
      * @param $roomName
      * @return null
      */
