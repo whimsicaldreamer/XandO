@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2017 at 09:25 AM
+-- Generation Time: Mar 24, 2017 at 07:42 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -34,7 +34,8 @@ CREATE TABLE `players` (
   `room` varchar(9) NOT NULL,
   `playerName` varchar(512) NOT NULL,
   `boardSize` int(1) NOT NULL,
-  `lastPing` varchar(12) NOT NULL
+  `lastPing` varchar(12) NOT NULL,
+  `sessionId` varchar(128) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
