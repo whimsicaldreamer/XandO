@@ -85,15 +85,27 @@ class game
      */
     public function setPlayer($playerName, $boardSize, $roomNumber)
     {
+        $allPlayers = $this->getPlayers($roomNumber);
+        $activeSessionId = null;
+        if(empty($allPlayers)) {
+            session_start();
+            $activeSessionId = session_id();
+        }
+        else {
+            $activeSessionId = $allPlayers[0]['sessionId'];
+            session_id($activeSessionId);
+            session_start();
+        }
         $playerId = mt_rand();
         try {
-            $stmt = $this->dbh->prepare("INSERT INTO players(playerId, room, playerName, boardSize, lastPing) VALUES (:playerId, :roomNumber, :playerName, :boardSize, :lastPing)");
+            $stmt = $this->dbh->prepare("INSERT INTO players(playerId, room, playerName, boardSize, lastPing, sessionId) VALUES (:playerId, :roomNumber, :playerName, :boardSize, :lastPing, :sessionId)");
             $stmt->execute(array(
                 ":playerId" =>  $playerId,
                 ":roomNumber" => $roomNumber,
                 ":playerName" => $playerName,
                 ":boardSize" => $boardSize,
-                ":lastPing" => time()
+                ":lastPing" => time(),
+                ":sessionId" => $activeSessionId
             ));
         }
         catch (Exception $e) {
