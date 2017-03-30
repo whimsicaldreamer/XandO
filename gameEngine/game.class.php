@@ -89,6 +89,7 @@ class game
         $activeSessionId = null;
         if(empty($allPlayers)) {
             session_start();
+            session_regenerate_id();
             $activeSessionId = session_id();
         }
         else {
