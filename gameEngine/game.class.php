@@ -90,6 +90,7 @@ class game
         if(empty($allPlayers)) {
             session_start();
             session_regenerate_id();
+            $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');;
             $activeSessionId = session_id();
         }
         else {
@@ -281,4 +282,103 @@ class game
         }
     }
 
+    /**
+     * Function to add player moves to the session
+     */
+    public function addMove($cell, $roomName)
+    {
+        session_start();
+        $playerId = $_COOKIE['players_local_'.$roomName];
+        $resultSet = $this->getPlayers($roomName);
+        $result = [];
+        $symbol = '';
+        foreach($resultSet as $player) {
+            $result[] = $player['playerId'];
+        }
+        $playerKey = array_search($playerId, $result);
+
+        if($playerKey == 0) {
+            $symbol = 'X';
+        }
+        elseif ($playerKey == 1) {
+            $symbol = 'O';
+        }
+
+        if(isset($_SESSION['moves']) && $_SESSION['moves'][$cell] == '-') {
+            $_SESSION['moves'][$cell] = $symbol;
+        }
+
+    }
+
+    /**
+     * Function to decide which player is winning
+     * @param $state
+     * @return string
+     */
+    function whoIsWinning($state)
+    {
+        $n = sqrt(count($state));
+        $rows = $this->IsWin($state, $this->GenPaths($n, 0,     1,      $n, $n));
+        $cols = $this->IsWin($state, $this->GenPaths($n, 0,     $n,     1,  $n));
+        $diUp = $this->IsWin($state, $this->GenPaths(1, $n-1,  $n-1,   0,  $n));
+        $diDn = $this->IsWin($state, $this->GenPaths(1,  0,     $n+1,   0,  $n));
+
+        if ($rows !== '-') return $rows;
+        if ($cols !== '-') return $cols;
+        if ($diUp !== '-') return $diUp;
+        return $diDn;
+    }
+
+    /**
+     * Function to generate the paths to win
+     * @param $count
+     * @param $start
+     * @param $incrementA
+     * @param $incrementB
+     * @param $lengthToWin
+     * @return array
+     */
+    function GenPaths($count, $start, $incrementA, $incrementB, $lengthToWin)
+    {
+        $paths = [];
+        for ($i = 0; $i < $count; $i++) {
+            $path = [];
+            for($j = 0; $j < $lengthToWin; $j++) {
+                array_push($path, $start + $i * $incrementB + $j * $incrementA);
+            }
+            array_push($paths, $path);
+        }
+        return $paths;
+    }
+
+    /**
+     * @param $state
+     * @param $paths
+     * @return string
+     */
+    function IsWin($state, $paths)
+    {
+        for ($i = 0; $i < count($paths); $i++) {
+            $currentPathResult = $this->IsPathWin($state, $paths[$i]);
+            if ($currentPathResult != '-')
+                return $currentPathResult;
+        }
+        return '-';
+    }
+
+    /**
+     * @param $state
+     * @param $path
+     * @return string
+     */
+    function IsPathWin($state, $path)
+    {
+        $first = $state[$path[0]];
+        for ($j = 1; $j < count($path); $j++) {
+            $compareToFirst = $state[$path[$j]];
+            if ($compareToFirst != $first)
+                return '-';
+        }
+        return $first;
+    }
 }

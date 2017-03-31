@@ -34,6 +34,7 @@ $(document).ready(function () {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             // update game table
             var players = JSON.parse(response);
+            console.log(response);
             jQuery.each(['p1_name', 'p2_name'], function(_, key) {
                 if (players[key]) {
                     $('#' + key).html(players[key]);
@@ -45,4 +46,13 @@ $(document).ready(function () {
         });
     }
     updateState();
+
+    cellBlock.on('click', function () {
+        var cellTarget = $(this);
+        var cellNumber = cellTarget.data('cell');
+        $.post('gameEngine/app.php', {action: 'move', room: roomName, cell: cellNumber}, function(response) {
+            console.log(response);
+            //cellTarget.html(response);
+        });
+    });
 });
