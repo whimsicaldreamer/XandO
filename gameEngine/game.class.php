@@ -306,8 +306,13 @@ class game
 
         if(isset($_SESSION['moves']) && $_SESSION['moves'][$cell] == '-') {
             $_SESSION['moves'][$cell] = $symbol;
+            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0];
+            return $response;
         }
-
+        else {
+            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 1];
+            return $response;
+        }
     }
 
     /**

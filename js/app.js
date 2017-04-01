@@ -52,7 +52,13 @@ $(document).ready(function () {
         var cellNumber = cellTarget.data('cell');
         $.post('gameEngine/app.php', {action: 'move', room: roomName, cell: cellNumber}, function(response) {
             console.log(response);
-            //cellTarget.html(response);
+            var moves = JSON.parse(response);
+            if(moves.code == 1) {
+                $('#notification').html('This place is already occupied!').addClass('alert-warning animated bounceInDown').show().delay(5000).addClass('bounceOutUp');
+            }
+            else {
+                $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol);
+            }
         });
     });
 });

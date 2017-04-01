@@ -45,6 +45,5 @@ if (!empty($_POST['action']) && 'update' == $_POST['action']) {
 }
 
 if(!empty($_POST['action']) && 'move' == $_POST['action']) {
-    $gameHandler->addMove($_POST['cell'], $_POST['room']);
-    print_r($_SESSION['moves']);
+    echo json_encode($gameHandler->addMove($_POST['cell'], $_POST['room']));
 }
