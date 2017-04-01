@@ -130,6 +130,7 @@ h4 {
 .bounceOutUp {
     -webkit-animation-name: bounceOutUp;
     animation-name: bounceOutUp;
+    animation-delay: 2s;
 }
 .navbar {
     border-radius: 0;

@@ -23,6 +23,7 @@ $(document).ready(function () {
     var playerOne_score =   $('#p1_score');
     var playerTwo_score =   $('#p2_score');
     var cellBlock       =   $('td');
+    var notification    =   $('#notification');
 
     /**
      * Update Player name on joining
@@ -54,7 +55,11 @@ $(document).ready(function () {
             console.log(response);
             var moves = JSON.parse(response);
             if(moves.code == 1) {
-                $('#notification').html('This place is already occupied!').addClass('alert-warning animated bounceInDown').show().delay(5000).addClass('bounceOutUp');
+                $(notification).html('This place is already occupied!').addClass('alert-warning animated bounceInDown').show().one('animationend',function() {
+                    $(this).addClass('bounceOutUp').one('animationend', function() {
+                        $(this).removeClass('alert-warning animated bounceInDown bounceOutUp').html('');
+                    });
+                });
             }
             else {
                 $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol);
