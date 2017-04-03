@@ -301,10 +301,10 @@ class game
         $playerKey = array_search($playerId, $result);
 
         if($playerKey == 0) {
-            $symbol = 'X';
+            $symbol = '&#10008;';
         }
         elseif ($playerKey == 1) {
-            $symbol = 'O';
+            $symbol = '&#9711;';
         }
 
         if(isset($_SESSION['moves']) && $_SESSION['moves'][$cell] == '-') {

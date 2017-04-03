@@ -33,8 +33,9 @@ $(document).ready(function () {
 
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
-            // update game table
             var playersData = JSON.parse(response);
+            var symbolColor;
+            //Update player names
             jQuery.each(['p1_name', 'p2_name'], function(_, key) {
                 if (playersData.playerNames[key]) {
                     $('#' + key).html(playersData.playerNames[key]);
@@ -42,7 +43,20 @@ $(document).ready(function () {
                     $('#' + key).html('---');
                 }
             });
-            setTimeout(updateState, 5000);
+            //Update table with moves by both players
+            jQuery.each(playersData.movesMade, function(i, key) {
+               if(key != '-') {
+                   if(key == '&#10008;') {
+                       symbolColor = 'crosses';
+                   }
+                   else
+                   if(key == '&#9711;') {
+                       symbolColor = 'noughts';
+                   }
+                   $("td[data-cell='"+ i +"']").html(key).addClass(symbolColor);
+               }
+            });
+            setTimeout(updateState, 2500);
         });
     }
     updateState();
@@ -50,6 +64,7 @@ $(document).ready(function () {
     cellBlock.on('click', function () {
         var cellTarget = $(this);
         var cellNumber = cellTarget.data('cell');
+        var symbolColor;
         $.post('gameEngine/app.php', {action: 'move', room: roomName, cell: cellNumber}, function(response) {
             console.log(response);
             var moves = JSON.parse(response);
@@ -61,7 +76,14 @@ $(document).ready(function () {
                 });
             }
             else {
-                $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol);
+                if(moves.symbol == '&#10008;') {
+                    symbolColor = 'crosses';
+                }
+                else
+                if(moves.symbol == '&#9711;') {
+                    symbolColor = 'noughts';
+                }
+                $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol).addClass(symbolColor);
             }
         });
     });
