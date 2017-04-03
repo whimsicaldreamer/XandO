@@ -18,10 +18,10 @@ $(document).ready(function () {
     /**
      * Initializing all selectors
      */
-    var playerOne_name  =   $('#p1_name');
-    var playerTwo_name  =   $('#p2_name');
-    var playerOne_score =   $('#p1_score');
-    var playerTwo_score =   $('#p2_score');
+    var playerOneName  =   $('#p1_name');
+    var playerTwoName  =   $('#p2_name');
+    var playerOneScore =   $('#p1_score');
+    var playerTwoScore =   $('#p2_score');
     var cellBlock       =   $('td');
     var notification    =   $('#notification');
 
@@ -34,11 +34,10 @@ $(document).ready(function () {
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             // update game table
-            var players = JSON.parse(response);
-            console.log(response);
+            var playersData = JSON.parse(response);
             jQuery.each(['p1_name', 'p2_name'], function(_, key) {
-                if (players[key]) {
-                    $('#' + key).html(players[key]);
+                if (playersData.playerNames[key]) {
+                    $('#' + key).html(playersData.playerNames[key]);
                 } else {
                     $('#' + key).html('---');
                 }

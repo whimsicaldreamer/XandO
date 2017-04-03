@@ -284,6 +284,9 @@ class game
 
     /**
      * Function to add player moves to the session
+     * @param $cell
+     * @param $roomName
+     * @return array
      */
     public function addMove($cell, $roomName)
     {
@@ -306,13 +309,23 @@ class game
 
         if(isset($_SESSION['moves']) && $_SESSION['moves'][$cell] == '-') {
             $_SESSION['moves'][$cell] = $symbol;
-            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0];
+            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0]; //The place is not taken
             return $response;
         }
         else {
-            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 1];
+            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 1]; //The place is already taken
             return $response;
         }
+    }
+
+    /**
+     * Function to get all moves made
+     * @return mixed
+     */
+    public function getMoves()
+    {
+        session_start();
+        return $_SESSION['moves'];
     }
 
     /**
@@ -323,10 +336,10 @@ class game
     function whoIsWinning($state)
     {
         $n = sqrt(count($state));
-        $rows = $this->IsWin($state, $this->GenPaths($n, 0,     1,      $n, $n));
-        $cols = $this->IsWin($state, $this->GenPaths($n, 0,     $n,     1,  $n));
-        $diUp = $this->IsWin($state, $this->GenPaths(1, $n-1,  $n-1,   0,  $n));
-        $diDn = $this->IsWin($state, $this->GenPaths(1,  0,     $n+1,   0,  $n));
+        $rows = $this->isWin($state, $this->genPaths($n, 0,     1,      $n, $n));
+        $cols = $this->isWin($state, $this->genPaths($n, 0,     $n,     1,  $n));
+        $diUp = $this->isWin($state, $this->genPaths(1, $n-1,  $n-1,   0,  $n));
+        $diDn = $this->isWin($state, $this->genPaths(1,  0,     $n+1,   0,  $n));
 
         if ($rows !== '-') return $rows;
         if ($cols !== '-') return $cols;
@@ -343,7 +356,7 @@ class game
      * @param $lengthToWin
      * @return array
      */
-    function GenPaths($count, $start, $incrementA, $incrementB, $lengthToWin)
+    function genPaths($count, $start, $incrementA, $incrementB, $lengthToWin)
     {
         $paths = [];
         for ($i = 0; $i < $count; $i++) {
@@ -361,10 +374,10 @@ class game
      * @param $paths
      * @return string
      */
-    function IsWin($state, $paths)
+    function isWin($state, $paths)
     {
         for ($i = 0; $i < count($paths); $i++) {
-            $currentPathResult = $this->IsPathWin($state, $paths[$i]);
+            $currentPathResult = $this->isPathWin($state, $paths[$i]);
             if ($currentPathResult != '-')
                 return $currentPathResult;
         }
@@ -376,7 +389,7 @@ class game
      * @param $path
      * @return string
      */
-    function IsPathWin($state, $path)
+    function isPathWin($state, $path)
     {
         $first = $state[$path[0]];
         for ($j = 1; $j < count($path); $j++) {
