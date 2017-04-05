@@ -359,6 +359,9 @@ class game
     function genPaths($count, $start, $incrementA, $incrementB, $lengthToWin)
     {
         $paths = [];
+        if($lengthToWin > 3) {
+            $lengthToWin = $lengthToWin - 1;
+        }
         for ($i = 0; $i < $count; $i++) {
             $path = [];
             for($j = 0; $j < $lengthToWin; $j++) {
