@@ -359,9 +359,6 @@ class game
     function genPaths($count, $start, $incrementA, $incrementB, $lengthToWin)
     {
         $paths = [];
-        if($lengthToWin > 3) {
-            $lengthToWin = $lengthToWin - 1;
-        }
         for ($i = 0; $i < $count; $i++) {
             $path = [];
             for($j = 0; $j < $lengthToWin; $j++) {
@@ -392,14 +389,24 @@ class game
      * @param $path
      * @return string
      */
-    function isPathWin($state, $path)
+    function isPathWin($state, $path, $winThreshold = 3)
     {
-        $first = $state[$path[0]];
-        for ($j = 1; $j < count($path); $j++) {
-            $compareToFirst = $state[$path[$j]];
-            if ($compareToFirst != $first)
-                return '-';
+        $actualPathFollowed = "";
+        for($j=0; $j<count($path); $j++) {
+            $actualPathFollowed .= $state[$path[$j]];
         }
-        return $first;
+        $countX = substr_count($actualPathFollowed, '&#10008;');
+        $countO = substr_count($actualPathFollowed, '&#9711;');
+
+        if($countX >=$winThreshold) {
+            return '&#10008;';
+        }
+        elseif($countO >= $winThreshold) {
+            return '&#9711;';
+        }
+        else {
+            return '-';
+        }
+
     }
 }
