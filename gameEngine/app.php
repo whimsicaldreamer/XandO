@@ -40,6 +40,11 @@ if (empty($_POST['room'])) {
 if (!empty($_POST['action']) && 'update' == $_POST['action']) {
     $gameHandler->updatePing($_POST['room']);
     $gameHandler->removeInactivePlayer($_POST['room']);
+    $allMoves = $gameHandler->getMoves();
+    $dataSet = ['playerNames' => $gameHandler->getPlayersNames($_POST['room']), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves)];
+    echo json_encode($dataSet);
+}
 
-    echo json_encode($gameHandler->getPlayersNames($_POST['room']));
+if(!empty($_POST['action']) && 'move' == $_POST['action']) {
+    echo json_encode($gameHandler->addMove($_POST['cell'], $_POST['room']));
 }

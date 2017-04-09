@@ -18,11 +18,12 @@ $(document).ready(function () {
     /**
      * Initializing all selectors
      */
-    var playerOne_name  =   $('#p1_name');
-    var playerTwo_name  =   $('#p2_name');
-    var playerOne_score =   $('#p1_score');
-    var playerTwo_score =   $('#p2_score');
+    var playerOneName  =   $('#p1_name');
+    var playerTwoName  =   $('#p2_name');
+    var playerOneScore =   $('#p1_score');
+    var playerTwoScore =   $('#p2_score');
     var cellBlock       =   $('td');
+    var notification    =   $('#notification');
 
     /**
      * Update Player name on joining
@@ -32,17 +33,60 @@ $(document).ready(function () {
 
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
-            // update game table
-            var players = JSON.parse(response);
+            var playersData = JSON.parse(response);
+            // Print the winner in console for now
+            console.log(playersData.winner);
+            var symbolColor;
+            //Update player names
             jQuery.each(['p1_name', 'p2_name'], function(_, key) {
-                if (players[key]) {
-                    $('#' + key).html(players[key]);
+                if (playersData.playerNames[key]) {
+                    $('#' + key).html(playersData.playerNames[key]);
                 } else {
                     $('#' + key).html('---');
                 }
             });
-            setTimeout(updateState, 5000);
+            //Update table with moves by both players
+            jQuery.each(playersData.movesMade, function(i, key) {
+               if(key != '-') {
+                   if(key == '&#10008;') {
+                       symbolColor = 'crosses';
+                   }
+                   else
+                   if(key == '&#9711;') {
+                       symbolColor = 'noughts';
+                   }
+                   $("td[data-cell='"+ i +"']").html(key).addClass(symbolColor);
+               }
+            });
+            setTimeout(updateState, 2500);
         });
     }
     updateState();
+
+    cellBlock.on('click', function () {
+        var cellTarget = $(this);
+        var cellNumber = cellTarget.data('cell');
+        var symbolColor;
+        $.post('gameEngine/app.php', {action: 'move', room: roomName, cell: cellNumber}, function(response) {
+            console.log(response);
+            var moves = JSON.parse(response);
+            if(moves.code == 1) {
+                $(notification).html('This place is already occupied!').addClass('alert-warning animated bounceInDown').show().one('animationend',function() {
+                    $(this).addClass('bounceOutUp').one('animationend', function() {
+                        $(this).removeClass('alert-warning animated bounceInDown bounceOutUp').html('');
+                    });
+                });
+            }
+            else {
+                if(moves.symbol == '&#10008;') {
+                    symbolColor = 'crosses';
+                }
+                else
+                if(moves.symbol == '&#9711;') {
+                    symbolColor = 'noughts';
+                }
+                $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol).addClass(symbolColor);
+            }
+        });
+    });
 });

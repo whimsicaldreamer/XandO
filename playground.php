@@ -35,6 +35,7 @@
     <link href="css/ionicons.min.css" rel="stylesheet">
 </head>
 <body>
+<div id="notification" class="alert" role="alert"></div>
 <div class="navbar navbar-default">
     <div class="container-fluid">
         <div class="row">
