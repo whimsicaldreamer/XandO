@@ -34,6 +34,7 @@ $(document).ready(function () {
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             var playersData = JSON.parse(response);
+            // Print the winner in console for now
             console.log(playersData.winner);
             var symbolColor;
             //Update player names

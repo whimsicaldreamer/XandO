@@ -329,17 +329,16 @@ class game
     }
 
     /**
-     * Function to decide which player is winning
      * @param $state
      * @return string
      */
     function whoIsWinning($state)
     {
         $n = sqrt(count($state));
-        $rows = $this->isWin($state, $this->genPaths($n, 0,     1,      $n, $n));
-        $cols = $this->isWin($state, $this->genPaths($n, 0,     $n,     1,  $n));
-        $diUp = $this->isWin($state, $this->genPaths(1, $n-1,  $n-1,   0,  $n));
-        $diDn = $this->isWin($state, $this->genPaths(1,  0,     $n+1,   0,  $n));
+        $rows = $this->isWin($state, $this->genPaths($n, 0,     1,      $n, $n), $n);
+        $cols = $this->isWin($state, $this->genPaths($n, 0,     $n,     1,  $n), $n);
+        $diUp = $this->isWin($state, $this->genPaths(1, $n-1,  $n-1,   0,  $n), $n);
+        $diDn = $this->isWin($state, $this->genPaths(1,  0,     $n+1,   0,  $n), $n);
 
         if ($rows !== '-') return $rows;
         if ($cols !== '-') return $cols;
@@ -353,15 +352,15 @@ class game
      * @param $start
      * @param $incrementA
      * @param $incrementB
-     * @param $lengthToWin
+     * @param $length
      * @return array
      */
-    function genPaths($count, $start, $incrementA, $incrementB, $lengthToWin)
+    function genPaths($count, $start, $incrementA, $incrementB, $length)
     {
         $paths = [];
         for ($i = 0; $i < $count; $i++) {
             $path = [];
-            for($j = 0; $j < $lengthToWin; $j++) {
+            for($j = 0; $j < $length; $j++) {
                 array_push($path, $start + $i * $incrementB + $j * $incrementA);
             }
             array_push($paths, $path);
@@ -372,12 +371,13 @@ class game
     /**
      * @param $state
      * @param $paths
+     * @param $cellsInALine
      * @return string
      */
-    function isWin($state, $paths)
+    function isWin($state, $paths, $cellsInALine)
     {
         for ($i = 0; $i < count($paths); $i++) {
-            $currentPathResult = $this->isPathWin($state, $paths[$i]);
+            $currentPathResult = $this->isPathWin($state, $paths[$i], $cellsInALine);
             if ($currentPathResult != '-')
                 return $currentPathResult;
         }
@@ -387,10 +387,14 @@ class game
     /**
      * @param $state
      * @param $path
+     * @param $winThreshold
      * @return string
      */
-    function isPathWin($state, $path, $winThreshold = 3)
+    function isPathWin($state, $path, $winThreshold)
     {
+        if($winThreshold > 3) {
+            $winThreshold = $winThreshold - 1;
+        }
         $actualPathFollowed = "";
         for($j=0; $j<count($path); $j++) {
             $actualPathFollowed .= $state[$path[$j]];
@@ -398,14 +402,17 @@ class game
         $countX = substr_count($actualPathFollowed, '&#10008;');
         $countO = substr_count($actualPathFollowed, '&#9711;');
 
-        if($countX >=$winThreshold) {
-            return '&#10008;';
-        }
-        elseif($countO >= $winThreshold) {
-            return '&#9711;';
+        if(in_array('-', $state)) {
+            if ($countX >= $winThreshold) {
+                return '&#10008;';
+            } elseif ($countO >= $winThreshold) {
+                return '&#9711;';
+            } else {
+                return '-';
+            }
         }
         else {
-            return '-';
+            return 'Draw';
         }
 
     }
