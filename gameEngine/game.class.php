@@ -343,6 +343,7 @@ class game
         if ($rows !== '-') return $rows;
         if ($cols !== '-') return $cols;
         if ($diUp !== '-') return $diUp;
+        if (!in_array('-', $state)) return 'Draw';
         return $diDn;
     }
 
@@ -402,18 +403,14 @@ class game
         $countX = substr_count($actualPathFollowed, '&#10008;');
         $countO = substr_count($actualPathFollowed, '&#9711;');
 
-        if(in_array('-', $state)) {
-            if ($countX >= $winThreshold) {
-                return '&#10008;';
-            } elseif ($countO >= $winThreshold) {
-                return '&#9711;';
-            } else {
-                return '-';
-            }
+        if ($countX >= $winThreshold) {
+            return '&#10008;';
+        }
+        elseif ($countO >= $winThreshold) {
+            return '&#9711;';
         }
         else {
-            return 'Draw';
+            return '-';
         }
-
     }
 }
