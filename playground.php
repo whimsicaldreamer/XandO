@@ -36,7 +36,7 @@
 </head>
 <body>
 <div id="notification" class="alert" role="alert"></div>
-<div id="podium" class="modal animated" role="dialog" aria-labelledby="podium">
+<div id="podium" class="modal animated" role="dialog" aria-labelledby="podium" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
