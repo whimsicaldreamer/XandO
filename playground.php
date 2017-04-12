@@ -36,6 +36,24 @@
 </head>
 <body>
 <div id="notification" class="alert" role="alert"></div>
+<div id="podium" class="modal animated" role="dialog" aria-labelledby="podium">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">Game Over!</h1>
+            </div>
+            <div class="modal-body">
+                <span id="winnerSymbol"></span>
+                <img id="crown" src="images/crown.png"/>
+                <div id="wonText" class="box"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="restart" type="button" class="btn btn-lg btn-restart btn-success"><span class="ion ion-refresh podium-btn-icon-restart"></span></button>
+                <button id="exit" type="button" class="btn btn-lg btn-exit btn-danger"><span class="ion ion-close-circled podium-btn-icon-exit"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="navbar navbar-default">
     <div class="container-fluid">
         <div class="row">
@@ -89,6 +107,7 @@
 
 
 <script src="js/jquery-2.1.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
