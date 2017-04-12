@@ -49,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button id="restart" type="button" class="btn btn-lg btn-restart btn-success"><span class="ion ion-refresh podium-btn-icon-restart"></span></button>
-                <button id="exit" type="button" class="btn btn-lg btn-exit btn-danger"><span class="ion ion-close-circled podium-btn-icon-exit"></span></button>
+                <a href="index"><button id="exit" type="button" class="btn btn-lg btn-exit btn-danger" ><span class="ion ion-close-circled podium-btn-icon-exit"></span></button></a>
             </div>
         </div>
     </div>

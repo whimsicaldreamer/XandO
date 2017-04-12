@@ -22,8 +22,9 @@ $(document).ready(function () {
     var playerTwoName  =   $('#p2_name');
     var playerOneScore =   $('#p1_score');
     var playerTwoScore =   $('#p2_score');
-    var cellBlock       =   $('td');
-    var notification    =   $('#notification');
+    var cellBlock      =   $('td');
+    var notification   =   $('#notification');
+    var podium         =   $('#podium');
 
     /**
      * Update Player name on joining
@@ -34,8 +35,6 @@ $(document).ready(function () {
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             var playersData = JSON.parse(response);
-            // Print the winner in console for now
-            console.log(playersData.winner);
             var symbolColor;
             //Update player names
             jQuery.each(['p1_name', 'p2_name'], function(_, key) {
@@ -58,6 +57,20 @@ $(document).ready(function () {
                    $("td[data-cell='"+ i +"']").html(key).addClass(symbolColor);
                }
             });
+            // Display the winner in the modal
+            if(playersData.winner == '&#10008;') {
+                $('#winnerSymbol').html(playersData.winner).addClass('crosses');
+                $('#crown').addClass('crownCross');
+                $('#wonText').html('WON!');
+                podium.modal().addClass('bounceIn');
+            }
+            else
+            if(playersData.winner == '&#9711;') {
+                $('#winnerSymbol').html(playersData.winner).addClass('noughts');
+                $('#crown').addClass('crownNought');
+                $('#wonText').html('WON!');
+                podium.modal().addClass('bounceIn');
+            }
             setTimeout(updateState, 2500);
         });
     }
