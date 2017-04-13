@@ -71,6 +71,13 @@ $(document).ready(function () {
                 $('#wonText').html('WON!');
                 podium.modal().addClass('bounceIn');
             }
+            else
+            if(playersData.winner == 'Draw') {
+                $('#winnerSymbol').html('<img src="images/1f61c.png"/>').addClass('tie');
+                $('#crown').hide();
+                $('#wonText').html('TIE!');
+                podium.modal().addClass('bounceIn');
+            }
             setTimeout(updateState, 2500);
         });
     }

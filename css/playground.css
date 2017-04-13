@@ -219,6 +219,10 @@ h4 {
 #winnerSymbol {
     font-size: 9em;
 }
+.tie {
+    display: inline-block;
+    padding-bottom: 10px;
+}
 .crownCross {
     position: absolute;
     margin-left: -45px;
