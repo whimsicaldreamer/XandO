@@ -114,7 +114,7 @@ class game
             $this->logError($e->getMessage());
         }
         // ToDo Change cookie name before deployment
-        setcookie("players_local_".$roomNumber, $playerId, time() + (86400 * 2), "/");
+        setcookie("players_local_X_O", $playerId, time() + (86400 * 2), "/");
     }
 
     /**
@@ -268,7 +268,7 @@ class game
      */
     public function updatePing($roomName)
     {
-        $playerId = $_COOKIE['players_local_'.$roomName];
+        $playerId = $_COOKIE['players_local_X_O'];
         $now = time();
         try {
             $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
@@ -291,7 +291,7 @@ class game
     public function addMove($cell, $roomName)
     {
         session_start();
-        $playerId = $_COOKIE['players_local_'.$roomName];
+        $playerId = $_COOKIE['players_local_X_O'];
         $resultSet = $this->getPlayers($roomName);
         $result = [];
         $symbol = '';
