@@ -30,7 +30,9 @@ $(document).ready(function() {
     });
     //Hide notification on clicking anywhere on the notification div
     $('body').on('click', function () {
-       $('#notification').removeClass('bounceInDown').addClass('bounceOutUp');
-        history.replaceState("", document.title, window.location.pathname);
+        if(!$('#notification').is(":visible")) {
+            $(this).removeClass('bounceInDown').addClass('bounceOutUp');
+            history.replaceState("", document.title, window.location.pathname);
+        }
     });
 });
