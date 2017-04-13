@@ -260,6 +260,14 @@ h4 {
 .podium-btn-icon-restart, .podium-btn-icon-exit {
     font-size: 50px;
 }
+.podium-btn-icon-restart {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: "FlipH"; /*IE*/
+    filter: "FlipH"; /*IE*/
+}
 .navbar {
     border-radius: 0;
     border: none;
