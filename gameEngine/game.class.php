@@ -221,7 +221,7 @@ class game
         for($row = 1; $row <= $gridSize; $row++) {
             $structure .= "<tr>\n";
             for($col = 1; $col <= $gridSize; $col++) {
-                $structure .= "<td data-cell=$cellNumber>&nbsp;</td>\n";
+                $structure .= "<td data-cell=$cellNumber></td>\n";
                 $cellNumber++;
             }
             $structure .= "</tr>\n";
@@ -332,7 +332,7 @@ class game
      * @param $state
      * @return string
      */
-    function whoIsWinning($state)
+    public function whoIsWinning($state)
     {
         $n = sqrt(count($state));
         $rows = $this->isWin($state, $this->genPaths($n, 0,     1,      $n, $n), $n);
@@ -356,7 +356,7 @@ class game
      * @param $length
      * @return array
      */
-    function genPaths($count, $start, $incrementA, $incrementB, $length)
+     private function genPaths($count, $start, $incrementA, $incrementB, $length)
     {
         $paths = [];
         for ($i = 0; $i < $count; $i++) {
@@ -375,7 +375,7 @@ class game
      * @param $cellsInALine
      * @return string
      */
-    function isWin($state, $paths, $cellsInALine)
+    private function isWin($state, $paths, $cellsInALine)
     {
         for ($i = 0; $i < count($paths); $i++) {
             $currentPathResult = $this->isPathWin($state, $paths[$i], $cellsInALine);
@@ -391,7 +391,7 @@ class game
      * @param $winThreshold
      * @return string
      */
-    function isPathWin($state, $path, $winThreshold)
+    private function isPathWin($state, $path, $winThreshold)
     {
         if($winThreshold > 3) {
             $winThreshold = $winThreshold - 1;
@@ -411,6 +411,19 @@ class game
         }
         else {
             return '-';
+        }
+    }
+
+    public function newGame()
+    {
+        try {
+            session_start();
+            $_SESSION['moves'] = array_fill(0, count($_SESSION['moves']), '-');
+            return 'success';
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+            return null;
         }
     }
 }

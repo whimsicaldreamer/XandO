@@ -32,6 +32,10 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
     die;
 }
 
+if(!empty($_POST['action']) && 'reset' == $_POST['action']) {
+    echo $gameHandler->newGame();
+}
+
 // all the following actions depends on $_POST['room'] parameter
 if (empty($_POST['room'])) {
     die;

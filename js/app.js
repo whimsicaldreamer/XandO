@@ -88,7 +88,6 @@ $(document).ready(function () {
         var cellNumber = cellTarget.data('cell');
         var symbolColor;
         $.post('gameEngine/app.php', {action: 'move', room: roomName, cell: cellNumber}, function(response) {
-            console.log(response);
             var moves = JSON.parse(response);
             if(moves.code == 1) {
                 $(notification).html('This place is already occupied!').addClass('alert-warning animated bounceInDown').show().one('animationend',function() {
@@ -108,5 +107,16 @@ $(document).ready(function () {
                 $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol).addClass(symbolColor);
             }
         });
+    });
+
+    $('#restart').on('click', function() {
+       $.post('gameEngine/app.php', {action: 'reset'}, function(response) {
+           if(response == 'success') {
+               podium.removeClass('bounceIn').addClass('bounceOut').one('animationend', function() {
+                   $(cellBlock).html('');
+                   podium.modal('hide').removeClass('bounceOut');
+               });
+           }
+       });
     });
 });
