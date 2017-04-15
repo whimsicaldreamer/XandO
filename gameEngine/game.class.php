@@ -90,13 +90,16 @@ class game
         if(empty($allPlayers)) {
             session_start();
             session_regenerate_id();
-            $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');;
+            $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');
+            $_SESSION['scores'] = array();
+            array_push($_SESSION['scores'], 0);
             $activeSessionId = session_id();
         }
         else {
             $activeSessionId = $allPlayers[0]['sessionId'];
             session_id($activeSessionId);
             session_start();
+            array_push($_SESSION['scores'], 0);
         }
         $playerId = mt_rand();
         try {
@@ -425,5 +428,16 @@ class game
             $this->logError($e->getMessage());
             return null;
         }
+    }
+
+    public function getScores()
+    {
+        $allScores = $_SESSION['scores'];
+        $result = [];
+        $count = 1;
+        foreach ($allScores as $score) {
+            $result[sprintf('p%d_score', $count++)] = $score;
+        }
+        return $result;
     }
 }

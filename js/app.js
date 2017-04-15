@@ -35,6 +35,9 @@ $(document).ready(function () {
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             var playersData = JSON.parse(response);
+            console.log(playersData);
+            console.log(playersData.playerNames);
+            console.log(playersData.playerScores);
             var symbolColor;
             //Update player names
             jQuery.each(['p1_name', 'p2_name'], function(_, key) {
