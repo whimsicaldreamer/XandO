@@ -91,15 +91,14 @@ class game
             session_start();
             session_regenerate_id();
             $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');
-            $_SESSION['scores'] = array();
-            array_push($_SESSION['scores'], 0);
+            $_SESSION['scores'] = [0,0,0];
+            $_SESSION['gameStat'] = 'IN_PROGRESS';
             $activeSessionId = session_id();
         }
         else {
             $activeSessionId = $allPlayers[0]['sessionId'];
             session_id($activeSessionId);
             session_start();
-            array_push($_SESSION['scores'], 0);
         }
         $playerId = mt_rand();
         try {
@@ -187,6 +186,7 @@ class game
                 ":now" => time(),
                 ":timeout" => $timeout,
             ));
+            $_SESSION['scores'] = [0, 0, 0];
         } catch (Exception $e) {
             $this->logError($e->getMessage());
         }
@@ -346,7 +346,10 @@ class game
         if ($rows !== '-') return $rows;
         if ($cols !== '-') return $cols;
         if ($diUp !== '-') return $diUp;
-        if (!in_array('-', $state)) return 'Draw';
+        if (!in_array('-', $state)) {
+            $this->updateScore(2);
+            return 'Draw';
+        }
         return $diDn;
     }
 
@@ -407,9 +410,11 @@ class game
         $countO = substr_count($actualPathFollowed, '&#9711;');
 
         if ($countX >= $winThreshold) {
+            $this->updateScore(0);
             return '&#10008;';
         }
         elseif ($countO >= $winThreshold) {
+            $this->updateScore(1);
             return '&#9711;';
         }
         else {
@@ -422,6 +427,7 @@ class game
         try {
             session_start();
             $_SESSION['moves'] = array_fill(0, count($_SESSION['moves']), '-');
+            $_SESSION['gameStat'] = 'IN_PROGRESS';
             return 'success';
         }
         catch (Exception $e) {
@@ -435,5 +441,17 @@ class game
         $allScores = $_SESSION['scores'];
         $result = $allScores[$index];
         return $result;
+    }
+
+    public function updateScore($index)
+    {
+        if($_SESSION['gameStat'] == 'IN_PROGRESS') {
+            if ($index == 0 || $index == 1 || $index == 2) {
+                $_SESSION['scores'][$index] += 1;
+                $_SESSION['gameStat'] = 'COMPLETED';
+            } else {
+                die;
+            }
+        }
     }
 }
