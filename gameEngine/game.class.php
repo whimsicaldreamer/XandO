@@ -152,7 +152,7 @@ class game
         $result = [];
         $count = 1;
         foreach ($resultSet as $player) {
-            $result[sprintf('p%d_name', $count++)] = $player['playerName'];
+            $result[sprintf('p%d_', $count++)] = ['name' => $player['playerName'], 'score' => $this->getScores($count - 2)];
         }
         return $result;
     }
@@ -430,14 +430,10 @@ class game
         }
     }
 
-    public function getScores()
+    public function getScores($index)
     {
         $allScores = $_SESSION['scores'];
-        $result = [];
-        $count = 1;
-        foreach ($allScores as $score) {
-            $result[sprintf('p%d_score', $count++)] = $score;
-        }
+        $result = $allScores[$index];
         return $result;
     }
 }

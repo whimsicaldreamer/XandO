@@ -45,7 +45,7 @@ if (!empty($_POST['action']) && 'update' == $_POST['action']) {
     $gameHandler->updatePing($_POST['room']);
     $gameHandler->removeInactivePlayer($_POST['room']);
     $allMoves = $gameHandler->getMoves();
-    $dataSet = ['playerNames' => $gameHandler->getPlayersNames($_POST['room']), 'playerScores' => $gameHandler->getScores(), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves)];
+    $dataSet = ['playerDetails' => $gameHandler->getPlayersNames($_POST['room']), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves)];
     echo json_encode($dataSet);
 }
 

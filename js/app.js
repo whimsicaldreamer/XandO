@@ -18,10 +18,6 @@ $(document).ready(function () {
     /**
      * Initializing all selectors
      */
-    var playerOneName  =   $('#p1_name');
-    var playerTwoName  =   $('#p2_name');
-    var playerOneScore =   $('#p1_score');
-    var playerTwoScore =   $('#p2_score');
     var cellBlock      =   $('td');
     var notification   =   $('#notification');
     var podium         =   $('#podium');
@@ -35,16 +31,15 @@ $(document).ready(function () {
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             var playersData = JSON.parse(response);
-            console.log(playersData);
-            console.log(playersData.playerNames);
-            console.log(playersData.playerScores);
             var symbolColor;
             //Update player names
-            jQuery.each(['p1_name', 'p2_name'], function(_, key) {
-                if (playersData.playerNames[key]) {
-                    $('#' + key).html(playersData.playerNames[key]);
+            jQuery.each(['p1_', 'p2_'], function(_, key) {
+                if (playersData.playerDetails[key]) {
+                    $('#' + key + 'name').html(playersData.playerDetails[key].name);
+                    $('#' + key + 'score').html(playersData.playerDetails[key].score);
                 } else {
-                    $('#' + key).html('---');
+                    $('#' + key + 'name').html('---');
+                    $('#' + key + 'score').html('0');
                 }
             });
             //Update table with moves by both players
