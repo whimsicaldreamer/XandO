@@ -15,6 +15,10 @@ class game
      */
     public $dbh;
 
+    const INDEX_SCORE_PLAYER_1 = 0;
+    const INDEX_SCORE_PLAYER_2 = 1;
+    const INDEX_SCORE_DRAW = 2;
+
     /**
      * Start the database connection
      */
@@ -186,7 +190,10 @@ class game
                 ":now" => time(),
                 ":timeout" => $timeout,
             ));
-            $_SESSION['scores'] = [0, 0, 0];
+            if ($stmt->rowCount()) {
+                //you should only reset scores when someone is really removed
+                $_SESSION['scores'] = [0, 0, 0];
+            }
         } catch (Exception $e) {
             $this->logError($e->getMessage());
         }
@@ -347,7 +354,7 @@ class game
         if ($cols !== '-') return $cols;
         if ($diUp !== '-') return $diUp;
         if (!in_array('-', $state)) {
-            $this->updateScore(2);
+            $this->updateScore(self::INDEX_SCORE_DRAW);
             return 'Draw';
         }
         return $diDn;
@@ -410,11 +417,11 @@ class game
         $countO = substr_count($actualPathFollowed, '&#9711;');
 
         if ($countX >= $winThreshold) {
-            $this->updateScore(0);
+            $this->updateScore(self::INDEX_SCORE_PLAYER_1);
             return '&#10008;';
         }
         elseif ($countO >= $winThreshold) {
-            $this->updateScore(1);
+            $this->updateScore(self::INDEX_SCORE_PLAYER_2);
             return '&#9711;';
         }
         else {
@@ -446,7 +453,7 @@ class game
     public function updateScore($index)
     {
         if($_SESSION['gameStat'] == 'IN_PROGRESS') {
-            if ($index == 0 || $index == 1 || $index == 2) {
+            if (in_array($index, [self::INDEX_SCORE_PLAYER_1, self::INDEX_SCORE_PLAYER_2, self::INDEX_SCORE_DRAW])) {
                 $_SESSION['scores'][$index] += 1;
                 $_SESSION['gameStat'] = 'COMPLETED';
             } else {
