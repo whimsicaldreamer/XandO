@@ -42,6 +42,7 @@ $(document).ready(function () {
                     $('#' + key + 'score').html('0');
                 }
             });
+            $('#draw_score').html(playersData.tie);
             //Update table with moves by both players
             jQuery.each(playersData.movesMade, function(i, key) {
                if(key != '-') {

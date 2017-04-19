@@ -45,7 +45,7 @@ if (!empty($_POST['action']) && 'update' == $_POST['action']) {
     $gameHandler->updatePing($_POST['room']);
     $gameHandler->removeInactivePlayer($_POST['room']);
     $allMoves = $gameHandler->getMoves(); // Session starts here
-    $dataSet = ['playerDetails' => $gameHandler->getPlayersNames($_POST['room']), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves)];
+    $dataSet = ['playerDetails' => $gameHandler->getPlayersNames($_POST['room']), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves), 'tie' => $gameHandler->getScores(game::INDEX_SCORE_DRAW)];
     echo json_encode($dataSet);
 }
 

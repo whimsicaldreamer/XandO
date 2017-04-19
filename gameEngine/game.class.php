@@ -17,7 +17,7 @@ class game
 
     const INDEX_SCORE_PLAYER_1 = 0;
     const INDEX_SCORE_PLAYER_2 = 1;
-    const INDEX_SCORE_DRAW = 2;
+    const INDEX_SCORE_DRAW     = 2;
 
     /**
      * Start the database connection
@@ -95,7 +95,7 @@ class game
             session_start();
             session_regenerate_id();
             $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');
-            $_SESSION['scores'] = [0,0,0];
+            $_SESSION['scores'] = [0, 0, 0];
             $_SESSION['gameStat'] = 'IN_PROGRESS';
             $activeSessionId = session_id();
         }

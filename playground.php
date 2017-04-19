@@ -83,8 +83,8 @@
                     </div>
                     <div class="col-xs-4">
                         <div class="counter-outer">
-                            <span class="score clearfix">0</span>
-                            <span class="detail">Draws</span>
+                            <span id="draw_score" class="score clearfix">0</span>
+                            <span id="draw_title" class="detail">Draws</span>
                         </div>
                     </div>
                 </div>
