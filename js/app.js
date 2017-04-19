@@ -95,6 +95,14 @@ $(document).ready(function () {
                     });
                 });
             }
+            else
+            if(moves.code == 2) {
+                $(notification).html('<strong>C&#2036;mon!!</strong> Your turn is over..').addClass('alert-danger animated bounceInDown').show().one('animationend',function() {
+                    $(this).addClass('bounceOutUp').one('animationend', function() {
+                        $(this).removeClass('alert-danger animated bounceInDown bounceOutUp').html('');
+                    });
+                });
+            }
             else {
                 if(moves.symbol == '&#10008;') {
                     symbolColor = 'crosses';

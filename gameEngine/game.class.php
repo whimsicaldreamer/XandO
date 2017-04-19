@@ -96,6 +96,7 @@ class game
             session_regenerate_id();
             $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');
             $_SESSION['scores'] = [0, 0, 0];
+            $_SESSION['lastMoveBy'] = '';
             $_SESSION['gameStat'] = 'IN_PROGRESS';
             $activeSessionId = session_id();
         }
@@ -321,12 +322,19 @@ class game
         }
 
         if(isset($_SESSION['moves']) && $_SESSION['moves'][$cell] == '-') {
-            $_SESSION['moves'][$cell] = $symbol;
-            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0]; //The place is not taken
-            return $response;
+            if($_SESSION['lastMoveBy'] != $playerId) {
+                $_SESSION['moves'][$cell] = $symbol;
+                $_SESSION['lastMoveBy'] = $playerId;
+                $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0]; //The place is not taken
+                return $response;
+            }
+            else {
+                $response = ['code' => 2]; // Same player trying to make more than 1 move in one turn
+                return $response;
+            }
         }
         else {
-            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 1]; //The place is already taken
+            $response = ['code' => 1]; //The place is already taken
             return $response;
         }
     }
