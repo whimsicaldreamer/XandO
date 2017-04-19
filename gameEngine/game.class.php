@@ -191,7 +191,10 @@ class game
                 ":timeout" => $timeout,
             ));
             if ($stmt->rowCount()) {
-                //you should only reset scores when someone is really removed
+                if(PHP_SESSION_ACTIVE != session_status()) {
+                    session_start();
+                }
+                //Reset scores when someone is really removed
                 $_SESSION['scores'] = [0, 0, 0];
             }
         } catch (Exception $e) {
@@ -334,7 +337,9 @@ class game
      */
     public function getMoves()
     {
-        session_start();
+        if(PHP_SESSION_ACTIVE != session_status()) {
+            session_start();
+        }
         return $_SESSION['moves'];
     }
 
