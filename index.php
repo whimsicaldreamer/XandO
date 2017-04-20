@@ -1,4 +1,7 @@
 <?php
+    require_once 'vendor/autoload.php';
+    require_once 'gameEngine/detectBrowser.php';
+
     $state  = "";
     $boardSize = "";
     $room = !empty($_GET['room']) ? $_GET['room'] : '';
@@ -26,10 +29,11 @@
 <div id="notification" class="alert alert-danger notification animated bounceInDown" role="alert"><strong>Oh Snap!</strong> Looks like the room is full. Try a new one!</div>
 <div class="container-fluid site-wrapper">
     <div class="centerMe">
-        <a href="index"><h1>n<span class="highlightO">o</span>ughts <span class="highlightX">X</span> cr<span class="highlightO">o</span>sses</h1></a>
+        <a href="index"><h1>n<span class="highlightO">o</span>ughts <span class="highlightX">X</span> cr<span class="highlightO">o</span>sses<span class="badge">Beta</span></h1></a>
         <p id="subHeader"><small>an age old time killer game</small></p>
 
         <div class="container-fluid">
+            <?php if($show) {?>
             <div class="row">
                 <div class="col-sm-5 col-sm-offset-2">
                     <div class="input-group input-group-lg">
@@ -66,6 +70,15 @@
                     <input type="hidden" id="room" value="<?= $room ?>">
                 </div>
             </div>
+            <?php }else { ?>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div id="browserWarning">
+                        Hey pal!!&nbsp; It looks like you need to switch to Firefox/ Chrome/ Edge.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
         </div>
     </div>
 </div>
