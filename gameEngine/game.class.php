@@ -15,6 +15,10 @@ class game
      */
     public $dbh;
 
+    const INDEX_SCORE_PLAYER_1 = 0;
+    const INDEX_SCORE_PLAYER_2 = 1;
+    const INDEX_SCORE_DRAW     = 2;
+
     /**
      * Start the database connection
      */
@@ -90,7 +94,10 @@ class game
         if(empty($allPlayers)) {
             session_start();
             session_regenerate_id();
-            $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');;
+            $_SESSION['moves'] = array_fill_keys(range(0, ($boardSize*$boardSize)-1), '-');
+            $_SESSION['scores'] = [0, 0, 0];
+            $_SESSION['lastMoveBy'] = '';
+            $_SESSION['gameStat'] = 'IN_PROGRESS';
             $activeSessionId = session_id();
         }
         else {
@@ -114,7 +121,7 @@ class game
             $this->logError($e->getMessage());
         }
         // ToDo Change cookie name before deployment
-        setcookie("players_local_".$roomNumber, $playerId, time() + (86400 * 2), "/");
+        setcookie("players_local_X_O", $playerId, time() + (86400 * 2), "/");
     }
 
     /**
@@ -149,7 +156,7 @@ class game
         $result = [];
         $count = 1;
         foreach ($resultSet as $player) {
-            $result[sprintf('p%d_name', $count++)] = $player['playerName'];
+            $result[sprintf('p%d_', $count++)] = ['name' => $player['playerName'], 'score' => $this->getScores($count - 2)];
         }
         return $result;
     }
@@ -184,6 +191,13 @@ class game
                 ":now" => time(),
                 ":timeout" => $timeout,
             ));
+            if ($stmt->rowCount()) {
+                if(PHP_SESSION_ACTIVE != session_status()) {
+                    session_start();
+                }
+                //Reset scores when someone is really removed
+                $_SESSION['scores'] = [0, 0, 0];
+            }
         } catch (Exception $e) {
             $this->logError($e->getMessage());
         }
@@ -221,7 +235,7 @@ class game
         for($row = 1; $row <= $gridSize; $row++) {
             $structure .= "<tr>\n";
             for($col = 1; $col <= $gridSize; $col++) {
-                $structure .= "<td data-cell=$cellNumber>&nbsp;</td>\n";
+                $structure .= "<td data-cell=$cellNumber></td>\n";
                 $cellNumber++;
             }
             $structure .= "</tr>\n";
@@ -268,7 +282,7 @@ class game
      */
     public function updatePing($roomName)
     {
-        $playerId = $_COOKIE['players_local_'.$roomName];
+        $playerId = $_COOKIE['players_local_X_O'];
         $now = time();
         try {
             $stmt = $this->dbh->prepare("UPDATE players SET lastPing = :now WHERE playerId = :playerID AND room = :roomName");
@@ -291,7 +305,7 @@ class game
     public function addMove($cell, $roomName)
     {
         session_start();
-        $playerId = $_COOKIE['players_local_'.$roomName];
+        $playerId = $_COOKIE['players_local_X_O'];
         $resultSet = $this->getPlayers($roomName);
         $result = [];
         $symbol = '';
@@ -308,12 +322,19 @@ class game
         }
 
         if(isset($_SESSION['moves']) && $_SESSION['moves'][$cell] == '-') {
-            $_SESSION['moves'][$cell] = $symbol;
-            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0]; //The place is not taken
-            return $response;
+            if($_SESSION['lastMoveBy'] != $playerId) {
+                $_SESSION['moves'][$cell] = $symbol;
+                $_SESSION['lastMoveBy'] = $playerId;
+                $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 0]; //The place is not taken
+                return $response;
+            }
+            else {
+                $response = ['code' => 2]; // Same player trying to make more than 1 move in one turn
+                return $response;
+            }
         }
         else {
-            $response = ['cellNo' => $cell, 'symbol' => $symbol, 'code' => 1]; //The place is already taken
+            $response = ['code' => 1]; //The place is already taken
             return $response;
         }
     }
@@ -324,7 +345,9 @@ class game
      */
     public function getMoves()
     {
-        session_start();
+        if(PHP_SESSION_ACTIVE != session_status()) {
+            session_start();
+        }
         return $_SESSION['moves'];
     }
 
@@ -332,7 +355,7 @@ class game
      * @param $state
      * @return string
      */
-    function whoIsWinning($state)
+    public function whoIsWinning($state)
     {
         $n = sqrt(count($state));
         $rows = $this->isWin($state, $this->genPaths($n, 0,     1,      $n, $n), $n);
@@ -343,6 +366,10 @@ class game
         if ($rows !== '-') return $rows;
         if ($cols !== '-') return $cols;
         if ($diUp !== '-') return $diUp;
+        if (!in_array('-', $state)) {
+            $this->updateScore(self::INDEX_SCORE_DRAW);
+            return 'Draw';
+        }
         return $diDn;
     }
 
@@ -355,7 +382,7 @@ class game
      * @param $length
      * @return array
      */
-    function genPaths($count, $start, $incrementA, $incrementB, $length)
+     private function genPaths($count, $start, $incrementA, $incrementB, $length)
     {
         $paths = [];
         for ($i = 0; $i < $count; $i++) {
@@ -374,7 +401,7 @@ class game
      * @param $cellsInALine
      * @return string
      */
-    function isWin($state, $paths, $cellsInALine)
+    private function isWin($state, $paths, $cellsInALine)
     {
         for ($i = 0; $i < count($paths); $i++) {
             $currentPathResult = $this->isPathWin($state, $paths[$i], $cellsInALine);
@@ -390,7 +417,7 @@ class game
      * @param $winThreshold
      * @return string
      */
-    function isPathWin($state, $path, $winThreshold)
+    private function isPathWin($state, $path, $winThreshold)
     {
         if($winThreshold > 3) {
             $winThreshold = $winThreshold - 1;
@@ -402,18 +429,49 @@ class game
         $countX = substr_count($actualPathFollowed, '&#10008;');
         $countO = substr_count($actualPathFollowed, '&#9711;');
 
-        if(in_array('-', $state)) {
-            if ($countX >= $winThreshold) {
-                return '&#10008;';
-            } elseif ($countO >= $winThreshold) {
-                return '&#9711;';
-            } else {
-                return '-';
-            }
+        if ($countX >= $winThreshold) {
+            $this->updateScore(self::INDEX_SCORE_PLAYER_1);
+            return '&#10008;';
+        }
+        elseif ($countO >= $winThreshold) {
+            $this->updateScore(self::INDEX_SCORE_PLAYER_2);
+            return '&#9711;';
         }
         else {
-            return 'Draw';
+            return '-';
         }
+    }
 
+    public function newGame()
+    {
+        try {
+            session_start();
+            $_SESSION['moves'] = array_fill(0, count($_SESSION['moves']), '-');
+            $_SESSION['gameStat'] = 'IN_PROGRESS';
+            return 'success';
+        }
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+            return null;
+        }
+    }
+
+    public function getScores($index)
+    {
+        $allScores = $_SESSION['scores'];
+        $result = $allScores[$index];
+        return $result;
+    }
+
+    public function updateScore($index)
+    {
+        if($_SESSION['gameStat'] == 'IN_PROGRESS') {
+            if (in_array($index, [self::INDEX_SCORE_PLAYER_1, self::INDEX_SCORE_PLAYER_2, self::INDEX_SCORE_DRAW])) {
+                $_SESSION['scores'][$index] += 1;
+                $_SESSION['gameStat'] = 'COMPLETED';
+            } else {
+                die;
+            }
+        }
     }
 }

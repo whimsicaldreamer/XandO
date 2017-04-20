@@ -11,11 +11,11 @@
         header('Location: index');
         die;
     }
-    if (!isset($_COOKIE["players_local_".$roomName])) {
+    if (!isset($_COOKIE["players_local_X_O"])) {
         header('Location: index?room='.$roomName.'&action=join');
         die;
     }
-    if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_local_".$roomName])) {
+    if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_local_X_O"])) {
         header('Location: index?room='.$roomName.'&action=join');
         die;
     }
@@ -36,6 +36,24 @@
 </head>
 <body>
 <div id="notification" class="alert" role="alert"></div>
+<div id="podium" class="modal animated" role="dialog" aria-labelledby="podium" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">Game Over!</h1>
+            </div>
+            <div class="modal-body">
+                <span id="winnerSymbol"></span>
+                <img id="crown" src="images/crown.png"/>
+                <div id="wonText" class="box"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="restart" type="button" class="btn btn-lg btn-restart btn-success"><span class="ion ion-refresh podium-btn-icon-restart"></span></button>
+                <a href="index"><button id="exit" type="button" class="btn btn-lg btn-exit btn-danger" ><span class="ion ion-close-circled podium-btn-icon-exit"></span></button></a>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="navbar navbar-default">
     <div class="container-fluid">
         <div class="row">
@@ -65,8 +83,8 @@
                     </div>
                     <div class="col-xs-4">
                         <div class="counter-outer">
-                            <span class="score clearfix">0</span>
-                            <span class="detail">Draws</span>
+                            <span id="draw_score" class="score clearfix">0</span>
+                            <span id="draw_title" class="detail">Draws</span>
                         </div>
                     </div>
                 </div>
@@ -89,6 +107,7 @@
 
 
 <script src="js/jquery-2.1.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

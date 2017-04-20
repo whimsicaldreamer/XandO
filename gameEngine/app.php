@@ -32,6 +32,10 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
     die;
 }
 
+if(!empty($_POST['action']) && 'reset' == $_POST['action']) {
+    echo $gameHandler->newGame();
+}
+
 // all the following actions depends on $_POST['room'] parameter
 if (empty($_POST['room'])) {
     die;
@@ -40,8 +44,8 @@ if (empty($_POST['room'])) {
 if (!empty($_POST['action']) && 'update' == $_POST['action']) {
     $gameHandler->updatePing($_POST['room']);
     $gameHandler->removeInactivePlayer($_POST['room']);
-    $allMoves = $gameHandler->getMoves();
-    $dataSet = ['playerNames' => $gameHandler->getPlayersNames($_POST['room']), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves)];
+    $allMoves = $gameHandler->getMoves(); // Session starts here
+    $dataSet = ['playerDetails' => $gameHandler->getPlayersNames($_POST['room']), 'movesMade' => $allMoves, 'winner' => $gameHandler->whoIsWinning($allMoves), 'tie' => $gameHandler->getScores(game::INDEX_SCORE_DRAW)];
     echo json_encode($dataSet);
 }
 

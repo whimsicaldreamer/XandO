@@ -18,12 +18,9 @@ $(document).ready(function () {
     /**
      * Initializing all selectors
      */
-    var playerOneName  =   $('#p1_name');
-    var playerTwoName  =   $('#p2_name');
-    var playerOneScore =   $('#p1_score');
-    var playerTwoScore =   $('#p2_score');
-    var cellBlock       =   $('td');
-    var notification    =   $('#notification');
+    var cellBlock      =   $('td');
+    var notification   =   $('#notification');
+    var podium         =   $('#podium');
 
     /**
      * Update Player name on joining
@@ -34,17 +31,18 @@ $(document).ready(function () {
     function updateState() {
         $.post('gameEngine/app.php', {action: 'update', room: roomName}, function(response) {
             var playersData = JSON.parse(response);
-            // Print the winner in console for now
-            console.log(playersData.winner);
             var symbolColor;
             //Update player names
-            jQuery.each(['p1_name', 'p2_name'], function(_, key) {
-                if (playersData.playerNames[key]) {
-                    $('#' + key).html(playersData.playerNames[key]);
+            jQuery.each(['p1_', 'p2_'], function(_, key) {
+                if (playersData.playerDetails[key]) {
+                    $('#' + key + 'name').html(playersData.playerDetails[key].name);
+                    $('#' + key + 'score').html(playersData.playerDetails[key].score);
                 } else {
-                    $('#' + key).html('---');
+                    $('#' + key + 'name').html('---');
+                    $('#' + key + 'score').html('0');
                 }
             });
+            $('#draw_score').html(playersData.tie);
             //Update table with moves by both players
             jQuery.each(playersData.movesMade, function(i, key) {
                if(key != '-') {
@@ -58,6 +56,27 @@ $(document).ready(function () {
                    $("td[data-cell='"+ i +"']").html(key).addClass(symbolColor);
                }
             });
+            // Display the winner in the modal
+            if(playersData.winner == '&#10008;') {
+                $('#winnerSymbol').html(playersData.winner).addClass('crosses');
+                $('#crown').addClass('crownCross');
+                $('#wonText').html('WON!');
+                podium.modal().addClass('bounceIn');
+            }
+            else
+            if(playersData.winner == '&#9711;') {
+                $('#winnerSymbol').html(playersData.winner).addClass('noughts');
+                $('#crown').addClass('crownNought');
+                $('#wonText').html('WON!');
+                podium.modal().addClass('bounceIn');
+            }
+            else
+            if(playersData.winner == 'Draw') {
+                $('#winnerSymbol').html('<img src="images/1f61c.png"/>').addClass('tie');
+                $('#crown').hide();
+                $('#wonText').html('TIE!');
+                podium.modal().addClass('bounceIn');
+            }
             setTimeout(updateState, 2500);
         });
     }
@@ -68,12 +87,19 @@ $(document).ready(function () {
         var cellNumber = cellTarget.data('cell');
         var symbolColor;
         $.post('gameEngine/app.php', {action: 'move', room: roomName, cell: cellNumber}, function(response) {
-            console.log(response);
             var moves = JSON.parse(response);
             if(moves.code == 1) {
                 $(notification).html('This place is already occupied!').addClass('alert-warning animated bounceInDown').show().one('animationend',function() {
                     $(this).addClass('bounceOutUp').one('animationend', function() {
                         $(this).removeClass('alert-warning animated bounceInDown bounceOutUp').html('');
+                    });
+                });
+            }
+            else
+            if(moves.code == 2) {
+                $(notification).html('<strong>C&#2036;mon!!</strong> Your turn is over..').addClass('alert-danger animated bounceInDown').show().one('animationend',function() {
+                    $(this).addClass('bounceOutUp').one('animationend', function() {
+                        $(this).removeClass('alert-danger animated bounceInDown bounceOutUp').html('');
                     });
                 });
             }
@@ -88,5 +114,16 @@ $(document).ready(function () {
                 $("td[data-cell='"+ moves.cellNo +"']").html(moves.symbol).addClass(symbolColor);
             }
         });
+    });
+
+    $('#restart').on('click', function() {
+       $.post('gameEngine/app.php', {action: 'reset'}, function(response) {
+           if(response == 'success') {
+               podium.removeClass('bounceIn').addClass('bounceOut').one('animationend', function() {
+                   $(cellBlock).html('');
+                   podium.modal('hide').removeClass('bounceOut');
+               });
+           }
+       });
     });
 });

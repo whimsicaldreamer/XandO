@@ -28,9 +28,12 @@ $(document).ready(function() {
             }
         });
     });
-    //Hide notification on clicking anywhere on the notification div
-    $('body').on('click', function () {
-       $('#notification').removeClass('bounceInDown').addClass('bounceOutUp');
-        history.replaceState("", document.title, window.location.pathname);
+    //Hide notification on clicking anywhere on the page
+    $(document).on('click', function () {
+        var container = $('#notification');
+        if(container.is(":visible")) {
+            container.removeClass('bounceInDown').addClass('bounceOutUp');
+            history.replaceState("", document.title, window.location.pathname);
+        }
     });
 });
