@@ -2,23 +2,21 @@
     require_once 'gameEngine/game.class.php';
     $roomName = $_GET['room'];
     if ($roomName == '') {
-        header('Location: index');
+        header('Location: /index');
     }
 
     $gameHandler = new game();
 
     if (!$gameHandler->isRoomExists($roomName)) {
-        header('Location: index');
+        header('Location: /index');
         die;
     }
     if (!isset($_COOKIE["players_local_X_O"])) {
-        //header('Location: index?room='.$roomName.'&action=join');
-        header('Location: join/'.$roomName);
+        header('Location: /join/'.$roomName);
         die;
     }
     if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_local_X_O"])) {
-        //header('Location: index?room='.$roomName.'&action=join');
-        header('Location: join/'.$roomName);
+        header('Location: /join/'.$roomName);
         die;
     }
 

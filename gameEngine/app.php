@@ -27,7 +27,7 @@ if (isset($_POST['playerName']) && isset($_POST['gridSize'])) {
         $gameHandler->setPlayer($playerName, $gridSize, $gameRoom); // Set the player with a room
         echo '/room/'.$gameRoom; // Generate new room link
     } else {
-        echo 'index';
+        echo '/index';
     }
     die;
 }

@@ -7,3 +7,6 @@ RewriteRule ^room/([A-Za-z0-9]+)$ playground.php?room=$1 [L]
 
 RewriteCond %{REQUEST_FILENAME}.php !-f
 RewriteRule ^join/([A-Za-z0-9]+)$ index.php?room=$1&action=join [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) $1.php [L]
