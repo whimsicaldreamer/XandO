@@ -12,11 +12,13 @@
         die;
     }
     if (!isset($_COOKIE["players_local_X_O"])) {
-        header('Location: index?room='.$roomName.'&action=join');
+        //header('Location: index?room='.$roomName.'&action=join');
+        header('Location: join/'.$roomName);
         die;
     }
     if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_local_X_O"])) {
-        header('Location: index?room='.$roomName.'&action=join');
+        //header('Location: index?room='.$roomName.'&action=join');
+        header('Location: join/'.$roomName);
         die;
     }
 
@@ -29,10 +31,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
     <title>noughts N crosses</title>
+    <base href="/">
     <link href="images/ico.png" type="image/x-icon" rel="shortcut icon" />
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/playground.css" rel="stylesheet">
     <link href="css/ionicons.min.css" rel="stylesheet">
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-97701111-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
 </head>
 <body>
 <div id="notification" class="alert" role="alert"></div>
