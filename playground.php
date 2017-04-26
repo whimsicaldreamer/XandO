@@ -20,6 +20,7 @@
         die;
     }
 
+    $disqusPageIdentifier = 'h%^Fmx$sgaj3s';
     $structure = $gameHandler->buildBoard($roomName);
 ?>
 <!DOCTYPE html>
@@ -112,13 +113,26 @@
     </div>
 </div>
 <input id="room" type="hidden" value="<?= $roomName ?>">
-<div class="comments" style="background-color: #9d9d9d;">
-    comments section to be made
+<div class="comments">
+    <div id="disqus_thread"></div>
 </div>
 
 
 <script src="js/jquery-2.1.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/app.js"></script>
+<script>
+     var disqus_config = function () {
+     this.page.identifier = '<?php echo $disqusPageIdentifier; ?>';
+     };
+
+    (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xando.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript.</noscript>
 </body>
 </html>
