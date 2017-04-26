@@ -11,11 +11,11 @@
         header('Location: /index');
         die;
     }
-    if (!isset($_COOKIE["players_local_X_O"])) {
+    if (!isset($_COOKIE["players_X_O"])) {
         header('Location: /join/'.$roomName);
         die;
     }
-    if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_local_X_O"])) {
+    if (!$gameHandler->findPlayer($roomName, $_COOKIE["players_X_O"])) {
         header('Location: /join/'.$roomName);
         die;
     }
