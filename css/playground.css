@@ -400,10 +400,15 @@ h4 {
 }
 .comments {
     padding: 25px;
+    padding-bottom: 0;
     background-color: #8a6d3b;
 }
 .comments a {
     color: #361E19!important;
+}
+#footer p{
+    margin-top: 25px;
+    font-size: 85%;
 }
 @media (min-width: 768px) {
     #wonText {

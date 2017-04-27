@@ -115,6 +115,9 @@
 <input id="room" type="hidden" value="<?= $roomName ?>">
 <div class="comments">
     <div id="disqus_thread"></div>
+    <div id="footer" class="container-fluid">
+        <p>Copyright &copy; 2017-18, Ayan Dey</p>
+    </div>
 </div>
 
 
