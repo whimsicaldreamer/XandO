@@ -12,3 +12,16 @@
 
 
 > Best supported on Mozilla Firefox, Chrome, Edge. (Not Tested on Safari)
+
+### How to play?
+##### For Multiplayer
+- Enter your name **[RECOMMENDED]**
+- Choose the grid size you want to play with.
+- Click/ Tap on **Let's Play** button to begin the game.
+- You will be taken to a URL like `xando.pe.hu/room/abc123`. Copy the URL from the address bar of your browser.
+- Share it with your friend with whom you want to play.
+- Your friend visits the link, enters his/her name and clicks/ taps the **Let's Play** button.
+- Now, both of you can see each other's name on the scoreboard and are ready to PLAY!
+
+##HAPPY TIME KILLING!
+                        
