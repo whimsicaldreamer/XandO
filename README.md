@@ -23,5 +23,5 @@
 - Your friend visits the link, enters his/her name and clicks/ taps the **Let's Play** button.
 - Now, both of you can see each other's name on the scoreboard and are ready to PLAY!
 
-##HAPPY TIME KILLING!
+# HAPPY TIME KILLING!
                         
