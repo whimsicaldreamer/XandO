@@ -71,7 +71,7 @@
         <div class="row">
             <div class="col-md-9 col-xs-12">
                 <div class="navbar-header">
-                    <a href="index" class="navbar-brand"><span class="icon ion-arrow-left-c"></span> Back</a>
+                    <a href="index" class="navbar-brand"><span class="ion ion-arrow-left-c"></span> Back</a>
                 </div>
             </div>
             <div class="col-md-3 col-xs-12 scoreboard">
@@ -123,7 +123,7 @@
 
 <script src="js/jquery-2.1.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/app.js"></script>
+<script src="js/app.min.js"></script>
 <script>
      var disqus_config = function () {
      this.page.identifier = '<?php echo $disqusPageIdentifier; ?>';

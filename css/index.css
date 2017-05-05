@@ -174,14 +174,85 @@ a:hover, a:active {
 .lefty {
     margin: 0;
 }
+#btn-sets {
+    width: 100%;
+}
 #start {
     background-color: #CC6644;
     border-color: #B0563C;
     color: #ffffff;
     margin-top: 30px;
+    width: 80%;
+}
+#manual {
+    background-color: #655965;
+    border-color: #42424C;
+    color: #ffffff;
+    margin-top: 30px;
+    width: 20%;
+    font-size: 27px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#manualIcon {
+    animation-duration: 700ms;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 #start:hover {
     background-color: #B0563C;
+}
+#manual:hover {
+    background-color: #42424C;
+}
+#manual:hover #manualIcon {
+    opacity: 1;
+    -webkit-animation-name: none;
+    -moz-animation-name: none;
+    -o-animation-name: none;
+    animation-name: none;
+}
+.modal-content {
+    background-color: #ccbb99;
+}
+.modal-header {
+    border: none;
+}
+.modal-title {
+    color: #42424C;
+    font-family: chalkitup, "sans-serif";
+    font-size: 35px;
+}
+.close {
+    font-size: 28px;
+    margin-top: 4px!important;
+    line-height: inherit;
+}
+.headings {
+    font-family: chalkitup, "sans-serif";
+}
+.category {
+    font-size: 18px;
+    color: #42424C;
+}
+.greeting {
+    font-size: 25px;
+    color: #5A332B;
+}
+.custom-color {
+    background-color: #5A332B;
+}
+.steps {
+    color: #42424C;
 }
 .centerMe {
     position: relative;

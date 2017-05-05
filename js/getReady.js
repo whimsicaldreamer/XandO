@@ -2,6 +2,9 @@
  * Created by Ayan Dey on 2/2/2017.
  */
 $(document).ready(function() {
+    //On page load
+    var manpageBtn = $('#manual');
+    $(manpageBtn).tooltip('show');
     //On click of start button
     $('#start').on('click', function() {
         var playerName = $('#user').val();
@@ -35,5 +38,15 @@ $(document).ready(function() {
             container.removeClass('bounceInDown').addClass('bounceOutUp');
             history.replaceState("", document.title, window.location.pathname);
         }
+    });
+    //Show the instructions panel
+    $(manpageBtn).on('click', function() {
+        $('#instructions').modal('show').addClass('animated bounceInDown');
+    });
+    //Close the instructions panel
+    $('.close').on('click', function () {
+        $('#instructions').addClass('bounceOutUp').one('animationend', function () {
+            $(this).modal('hide').removeClass('animated bounceInDown bounceOutUp');
+        });
     });
 });

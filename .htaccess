@@ -51,3 +51,5 @@ RewriteRule ^([\w-]+)$ $1.php [L]
        Header set Cache-Control "max-age=604800, public"
     </FilesMatch>
 </IfModule>
+
+ErrorDocument 404 /index
